@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 NAM Studio - Multi-Stakeholder Prototyping Platform
 
-## Getting Started
+A sophisticated prototyping platform where each stakeholder experiences their own branded version of the same functionality. Built with Next.js 14, TypeScript, and a powerful theming system.
 
-First, run the development server:
+## 🌟 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Theme-First Development**: Every component is theme-aware and adapts automatically
+- **Stakeholder-Centric**: Each client gets a completely different visual experience
+- **Component Reusability**: Same logic, different styling per stakeholder
+- **Rapid Prototyping**: Built for speed and iteration
+- **Production-Quality**: Functional prototypes with real interactions
+
+## 🎨 Stakeholder Theme
+
+### Acai Travel (Adventure Travel Platform)
+- **Personality**: Vibrant, adventurous, inspiring
+- **Colors**: Purple-pink primary (acai berry inspired), sky blue secondary, warm orange accents
+- **Typography**: Poppins, friendly and modern
+- **Style**: Generous rounded corners, enhanced shadows, travel-focused imagery
+- **URL**: `/acai-travel`
+
+## 🚀 Getting Started
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Open your browser** and navigate to:
+   - `http://localhost:3000` - Main landing page
+   - `http://localhost:3000/acai-travel` - Acai Travel experience
+
+## 🏗️ Architecture
+
+### Theming System
+- **CSS Variables**: Dynamic theming with CSS custom properties
+- **Theme Provider**: React context for theme management
+- **Automatic Application**: Themes apply automatically based on route
+
+### File Structure
+```
+src/
+├── themes/
+│   ├── config.ts          # Theme definitions
+│   ├── provider.tsx       # Theme context
+│   └── stakeholders/      # Individual themes
+├── components/
+│   ├── ui/               # Base components
+│   └── themed/           # Stakeholder-aware components
+├── app/
+│   ├── [stakeholder]/    # Dynamic routes per stakeholder
+│   └── page.tsx          # Landing page
+└── lib/
+    └── utils.ts          # Utilities
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Component Pattern
+```typescript
+// Theme-aware component example
+interface ThemedComponentProps {
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  stakeholder?: string; // Auto-detected from route
+}
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + CSS Variables
+- **Animation**: Framer Motion
+- **Components**: Headless UI
+- **Development**: Storybook
+- **Testing**: Vitest
 
-## Learn More
+## 📱 Available Pages
 
-To learn more about Next.js, take a look at the following resources:
+Acai Travel includes:
+- **Home**: Travel platform overview and navigation
+- **Travel Dashboard**: Booking metrics, destination analytics, and travel insights
+- **Trip Planning**: Itinerary management and booking tools (coming soon)
+- **Travel Preferences**: Settings for travel preferences and account management (coming soon)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 Development Principles
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Theme-First**: Every component must work across all themes
+2. **Consistency**: Same functionality, different presentation
+3. **Performance**: Optimized for rapid iteration
+4. **Accessibility**: WCAG compliant across all themes
+5. **Responsive**: Mobile-first approach
 
-## Deploy on Vercel
+## 🚀 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application is ready for deployment on Vercel, Netlify, or any platform supporting Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```
+
+## 🤝 Contributing
+
+This is a prototyping platform designed for rapid iteration and stakeholder feedback. The architecture supports easy addition of new themes and components.
+
+## 📄 License
+
+Built for NAM Studio prototyping purposes.
