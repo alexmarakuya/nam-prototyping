@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export default function SupportPage() {
-  const [selectedConversation, setSelectedConversation] = useState('test-ticket');
+  // const [selectedConversation, setSelectedConversation] = useState('test-ticket');
   const [showNotification, setShowNotification] = useState(true);
   const [showExpandedResponse, setShowExpandedResponse] = useState(false);
 
@@ -29,7 +29,7 @@ export default function SupportPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
-              <button className="p-1.5 rounded-lg" style={{ backgroundColor: '#6257F4' }} onMouseOver={(e) => e.target.style.backgroundColor = '#5146E3'} onMouseOut={(e) => e.target.style.backgroundColor = '#6257F4'}>
+              <button className="p-1.5 rounded-lg" style={{ backgroundColor: '#6257F4' }} onMouseOver={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#5146E3'} onMouseOut={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#6257F4'}>
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
@@ -52,7 +52,7 @@ export default function SupportPage() {
             </div>
 
             {/* Later */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => (e.target as HTMLDivElement).style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => (e.target as HTMLDivElement).style.backgroundColor = 'transparent'}>
               <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -60,7 +60,7 @@ export default function SupportPage() {
             </div>
 
             {/* Done */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => (e.target as HTMLDivElement).style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => (e.target as HTMLDivElement).style.backgroundColor = 'transparent'}>
               <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -68,7 +68,7 @@ export default function SupportPage() {
             </div>
 
             {/* Drafts */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => (e.target as HTMLDivElement).style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => (e.target as HTMLDivElement).style.backgroundColor = 'transparent'}>
               <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -77,7 +77,7 @@ export default function SupportPage() {
             </div>
 
             {/* Less */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => (e.target as HTMLDivElement).style.backgroundColor = '#D3D3DD'} onMouseLeave={(e) => (e.target as HTMLDivElement).style.backgroundColor = 'transparent'}>
               <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
               </svg>
@@ -218,7 +218,7 @@ export default function SupportPage() {
                         <span className="text-xs text-gray-500">Aug 5, 11:44 AM</span>
                       </div>
                       <div className="text-sm text-gray-600 mb-1">Hey there?</div>
-                      <div className="text-xs text-gray-500">WHat's up?</div>
+                      <div className="text-xs text-gray-500">What&apos;s up?</div>
                     </div>
                   </div>
                 </div>
@@ -592,7 +592,7 @@ export default function SupportPage() {
                       </div>
 
                       <p className="mt-2">
-                        For more details, you can visit Iberia's official baggage pages: 
+                        For more details, you can visit Iberia&apos;s official baggage pages: 
                         <a href="#" className="text-purple-600 underline hover:text-purple-800 ml-1">Carry-on Baggage</a> and 
                         <a href="#" className="text-purple-600 underline hover:text-purple-800 ml-1">Checked Baggage</a>.
                       </p>
