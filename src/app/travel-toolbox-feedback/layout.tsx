@@ -1,6 +1,6 @@
 import AntdProvider from '@/components/providers/AntdProvider';
 
-export default function ThirtySecondsToFlyLayout({
+export default function TravelToolboxFeedbackLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -11,4 +11,3 @@ export default function ThirtySecondsToFlyLayout({
     </AntdProvider>
   );
 }
-

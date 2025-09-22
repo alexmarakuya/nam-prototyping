@@ -46,7 +46,7 @@ A sophisticated prototyping platform where each stakeholder experiences their ow
 ```
 src/
 ├── themes/
-│   ├── config.ts          # Theme definitions
+image.png│   ├── config.ts          # Theme definitions
 │   ├── provider.tsx       # Theme context
 │   └── stakeholders/      # Individual themes
 ├── components/

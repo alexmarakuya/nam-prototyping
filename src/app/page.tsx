@@ -24,6 +24,22 @@ export default function HomePage() {
       color: 'bg-gradient-to-br from-blue-600 to-cyan-600',
       icon: '🚀',
     },
+    {
+      id: 'amexgbt-consulting',
+      name: 'AmexGBT Consulting Portal',
+      description: 'Enterprise business travel management dashboard with analytics',
+      theme: 'Corporate & Professional',
+      color: 'bg-gradient-to-br from-green-600 to-blue-700',
+      icon: '💼',
+    },
+    {
+      id: 'travel-toolbox-feedback',
+      name: 'Travel Toolbox Feedback',
+      description: 'User feedback form for real-world customer experience collection',
+      theme: 'Form & Feedback',
+      color: 'bg-gradient-to-br from-indigo-600 to-blue-800',
+      icon: '📝',
+    },
   ];
 
   const handleEnvironmentSelect = (envId: string) => {
@@ -58,7 +74,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
           {environments.map((env) => (
             <div
               key={env.id}
