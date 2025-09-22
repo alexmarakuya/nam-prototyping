@@ -13,11 +13,7 @@ import {
   Space,
   Typography,
   Tag,
-  Divider,
   List,
-  Tooltip,
-  notification,
-  Collapse,
   Progress,
   Statistic,
   Row,
@@ -35,26 +31,18 @@ import {
   BellOutlined,
   SearchOutlined,
   PlusOutlined,
-  MoreOutlined,
-  SendOutlined,
   FileTextOutlined,
-  GlobalOutlined,
-  CarOutlined,
-  HomeOutlined,
   PhoneOutlined,
-  MailOutlined,
   ClockCircleOutlined,
   CheckCircleOutlined,
   ExclamationCircleOutlined,
   RiseOutlined,
-  FallOutlined,
   UserOutlined,
   CreditCardOutlined,
 } from '@ant-design/icons';
 
 const { Sider, Content, Header } = Layout;
-const { Title, Text, Paragraph } = Typography;
-const { TextArea } = Input;
+const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
 export default function AmexGBTConsultingPage() {

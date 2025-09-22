@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Form, Input, Radio, Button, Space, Typography, Rate, Modal } from 'antd';
+import { Form, Input, Radio, Button, Space, Typography, Rate } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
@@ -13,7 +13,7 @@ export default function TravelToolboxFeedbackPage() {
   const [easeRating, setEaseRating] = useState(0);
   const [meetsExpectations, setMeetsExpectations] = useState('');
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: Record<string, unknown>) => {
     console.log('Form values:', values);
     // Handle form submission here
   };
@@ -75,7 +75,7 @@ export default function TravelToolboxFeedbackPage() {
             }}
           >
             Thank you for using Travel Toolbox! Your feedback is invaluable as we continue to enhance 
-            and improve our platform. Please share your experience with us - whether it's about 
+            and improve our platform. Please share your experience with us - whether it&apos;s about 
             functionality, design, ease of use, or any suggestions you have. Your input helps us 
             deliver the best possible travel management experience for you and other users.
           </Paragraph>
