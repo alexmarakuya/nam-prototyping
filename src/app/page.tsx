@@ -1,36 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const router = useRouter();
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null);
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
+  const [lastUpdatedTimes, setLastUpdatedTimes] = useState<Record<string, Date>>({});
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const clients = [
     {
       id: 'amexgbt',
       name: 'AmexGBT',
       description: 'American Express Global Business Travel',
-      color: 'bg-gradient-to-br from-slate-700 to-slate-900',
+      color: 'bg-gradient-to-br from-blue-800 to-blue-950',
       uiLibrary: 'Custom UI Components',
       prototypes: [
         {
           id: 'travel-toolbox-feedback',
-          name: 'Travel Toolbox Feedback Form',
-          description: 'User feedback collection system',
+          name: 'Travel Toolbox',
+          description: 'Travel management and feedback system',
+          thumbnail: '/api/placeholder/300/200?text=Travel+Toolbox',
+        },
+        {
+          id: '30-seconds-to-fly',
+          name: 'AI Studios',
+          description: 'Flight booking and support services',
+          thumbnail: '/api/placeholder/300/200?text=AI+Studios',
         }
       ]
     },
     {
-      id: '30secondstofly',
-      name: '30SecondsToFly',
-      description: 'Flight booking and support services',
-      color: 'bg-gradient-to-br from-blue-700 to-blue-900',
-      uiLibrary: 'Ant Design UI',
+      id: 'teamstack',
+      name: 'Teamstack',
+      description: 'Team collaboration and productivity platform',
+      color: 'bg-gradient-to-br from-orange-600 to-orange-800',
+      uiLibrary: 'Custom UI Components',
       prototypes: [
-        // No prototypes for now as requested
+        // Prototypes to be added
+      ]
+    },
+    {
+      id: 'simsalasim',
+      name: 'Simsalasim',
+      description: 'Digital innovation and creative solutions',
+      color: 'bg-gradient-to-br from-black to-gray-800',
+      uiLibrary: 'Custom UI Components',
+      prototypes: [
+        // Prototypes to be added
       ]
     },
     {
@@ -44,6 +63,7 @@ export default function HomePage() {
           id: 'support',
           name: 'Front CRM Acai Integration',
           description: 'Support ticket system with AI assistant',
+          thumbnail: '/api/placeholder/300/200?text=CRM+Integration',
         }
       ]
     },
@@ -60,8 +80,112 @@ export default function HomePage() {
     }, 500);
   };
 
+  const getEnvironmentUrl = (prototypeId: string) => {
+    const origin = window.location.origin;
+    const hostname = window.location.hostname;
+    
+    // Check if we're on Vercel (production or preview)
+    if (hostname.includes('vercel.app') || hostname.includes('vercel.com')) {
+      return `${origin}/${prototypeId}`;
+    }
+    
+    // Check if we're on a custom domain (production)
+    if (!hostname.includes('localhost') && !hostname.includes('127.0.0.1') && !hostname.includes('192.168.')) {
+      return `${origin}/${prototypeId}`;
+    }
+    
+    // Local development - use localhost with current port
+    return `${origin}/${prototypeId}`;
+  };
+
+  const handleCopyUrl = async (e: React.MouseEvent, prototypeId: string) => {
+    e.stopPropagation();
+    
+    try {
+      const url = getEnvironmentUrl(prototypeId);
+      await navigator.clipboard.writeText(url);
+      
+      // Show feedback
+      setCopiedId(prototypeId);
+      
+      // Clear feedback after 2 seconds
+      setTimeout(() => {
+        setCopiedId(null);
+      }, 2000);
+      
+      console.log('URL copied to clipboard:', url);
+      console.log('Environment detected:', {
+        hostname: window.location.hostname,
+        origin: window.location.origin,
+        isVercel: window.location.hostname.includes('vercel.app') || window.location.hostname.includes('vercel.com'),
+        isLocal: window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+      });
+    } catch (error) {
+      console.error('Failed to copy URL:', error);
+      
+      // Fallback for browsers that don't support clipboard API
+      try {
+        const url = getEnvironmentUrl(prototypeId);
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        setCopiedId(prototypeId);
+        setTimeout(() => {
+          setCopiedId(null);
+        }, 2000);
+      } catch (fallbackError) {
+        console.error('Fallback copy also failed:', fallbackError);
+      }
+    }
+  };
+
   const handleBackToClients = () => {
     setSelectedClient(null);
+  };
+
+  // Fetch last updated times for each project
+  const fetchLastUpdatedTimes = async () => {
+    try {
+      const response = await fetch('/api/last-updated');
+      if (response.ok) {
+        const data = await response.json();
+        const times: Record<string, Date> = {};
+        Object.entries(data).forEach(([key, value]) => {
+          times[key] = new Date(value as string);
+        });
+        setLastUpdatedTimes(times);
+      }
+    } catch (error) {
+      console.log('Could not fetch last updated times, using fallback');
+      // Fallback to current time minus some days for demo
+      const fallbackTimes: Record<string, Date> = {
+        'travel-toolbox-feedback': new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+        '30-seconds-to-fly': new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        'support': new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+      };
+      setLastUpdatedTimes(fallbackTimes);
+    }
+  };
+
+  useEffect(() => {
+    fetchLastUpdatedTimes();
+  }, []);
+
+  const getRelativeTime = (date: Date) => {
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    
+    if (diffInDays === 0) return 'Updated today';
+    if (diffInDays === 1) return 'Updated yesterday';
+    if (diffInDays < 7) return `Updated ${diffInDays} days ago`;
+    if (diffInDays < 30) return `Updated ${Math.floor(diffInDays / 7)} weeks ago`;
+    if (diffInDays < 365) return `Updated ${Math.floor(diffInDays / 30)} months ago`;
+    return `Updated ${Math.floor(diffInDays / 365)} years ago`;
   };
 
   if (selectedEnvironment) {
@@ -81,49 +205,76 @@ export default function HomePage() {
   if (selectedClient) {
     const client = clients.find(c => c.id === selectedClient);
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
-        <div className="max-w-4xl w-full">
-          <div className="text-center mb-12">
-            <button
-              onClick={handleBackToClients}
-              className="mb-6 flex items-center text-blue-600 hover:text-blue-800 transition-colors mx-auto"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Clients
-            </button>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <div className="min-h-screen bg-gray-50 py-16 px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-12">
+            <h1 className="text-2xl font-light text-gray-900 mb-4">
               {client?.name}
             </h1>
-            <div className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-800 mb-6">
-              {client?.uiLibrary}
-            </div>
           </div>
 
           {client?.prototypes && client.prototypes.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-              {client.prototypes.map((prototype) => (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {client.prototypes
+                .sort((a, b) => {
+                  const timeA = lastUpdatedTimes[a.id]?.getTime() || 0;
+                  const timeB = lastUpdatedTimes[b.id]?.getTime() || 0;
+                  return timeB - timeA; // Most recent first
+                })
+                .map((prototype) => (
                 <div
                   key={prototype.id}
-                  className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
+                  className="cursor-pointer bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-200 group overflow-hidden"
                   onClick={() => handlePrototypeSelect(prototype.id)}
                 >
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                    <div className={`${client.color} p-8 text-white`}>
-                      <h2 className="text-xl font-bold mb-2">{prototype.name}</h2>
-                      <p className="text-white/80 text-sm">{client.uiLibrary}</p>
+                  <div className="aspect-video bg-gray-100 relative">
+                    <img 
+                      src={prototype.thumbnail} 
+                      alt={`${prototype.name} preview`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = target.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-500 text-sm" style={{display: 'none'}}>
+                      Preview unavailable
                     </div>
-                    <div className="p-6">
-                      <p className="text-gray-600 mb-4">{prototype.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">Click to explore</span>
-                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                          <svg className="w-4 h-4 text-gray-600 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
+                  </div>
+                  <div className="p-5 flex flex-col flex-1">
+                    <div className="leading-tight flex-1">
+                      <h2 className="text-sm font-semibold text-gray-900">{prototype.name}</h2>
+                      <span className="text-sm font-normal text-gray-500">{prototype.description}</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-4">
+                      <div className="text-xs text-gray-400">
+                        {lastUpdatedTimes[prototype.id] 
+                          ? getRelativeTime(lastUpdatedTimes[prototype.id])
+                          : 'Loading...'
+                        }
                       </div>
+                      <button
+                        onClick={(e) => handleCopyUrl(e, prototype.id)}
+                        className={`flex items-center space-x-2 px-3 py-2 text-xs font-medium rounded-md transition-colors duration-200 ${
+                          copiedId === prototype.id
+                            ? 'text-green-700 bg-green-50 hover:bg-green-100'
+                            : 'text-gray-600 bg-gray-50 hover:bg-gray-100'
+                        }`}
+                        title={copiedId === prototype.id ? "URL copied!" : "Copy URL to share"}
+                      >
+                        {copiedId === prototype.id ? (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        )}
+                        <span>{copiedId === prototype.id ? 'Copied!' : 'Share'}</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -148,59 +299,43 @@ export default function HomePage() {
 
   // Show clients selection
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
-      <div className="max-w-4xl w-full">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            NAM Prototype Clients
+    <div className="min-h-screen bg-gray-50 py-16 px-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-12">
+          <h1 className="text-2xl font-light text-gray-900 mb-4">
+            NAM Prototypes
           </h1>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {clients.map((client) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {clients
+            .sort((a, b) => b.prototypes.length - a.prototypes.length)
+            .map((client) => (
             <div
               key={client.id}
-              className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
+              className="cursor-pointer p-4 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-200"
               onClick={() => handleClientSelect(client.id)}
             >
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                <div className={`${client.color} p-8 text-white`}>
-                  <h2 className="text-2xl font-bold mb-3">{client.name}</h2>
-                  <p className="text-white/80 text-sm">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-sm font-medium text-gray-600">
+                    {client.name.charAt(0)}
+                  </span>
+                </div>
+                <div className="leading-tight">
+                  <h2 className="text-sm font-semibold text-gray-900">{client.name}</h2>
+                  <span className="text-sm font-normal text-gray-500">
                     {client.prototypes.length > 0 
-                      ? `${client.prototypes.length} prototype${client.prototypes.length !== 1 ? 's' : ''}`
+                      ? `${client.prototypes.length} project${client.prototypes.length !== 1 ? 's' : ''}`
                       : 'In development'
                     }
-                  </p>
-                </div>
-                <div className="p-6">
-                  <div className="mb-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700">
-                      {client.uiLibrary}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 mb-4">{client.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">
-                      {client.prototypes.length > 0 ? 'View prototypes' : 'In development'}
-                    </span>
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-slate-200 transition-colors">
-                      <svg className="w-4 h-4 text-gray-600 group-hover:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-gray-500 text-sm">
-            Client-specific design systems and UI implementations
-          </p>
-        </div>
       </div>
     </div>
   );
