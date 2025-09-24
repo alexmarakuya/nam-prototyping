@@ -22,13 +22,13 @@ export default function HomePage() {
           id: 'travel-toolbox-feedback',
           name: 'Travel Toolbox',
           description: 'Travel management and feedback system',
-          thumbnail: '/api/placeholder/300/200?text=Travel+Toolbox',
+          thumbnail: '/api/preview/travel-toolbox-feedback',
         },
         {
           id: '30-seconds-to-fly',
           name: 'AI Studios',
           description: 'Flight booking and support services',
-          thumbnail: '/api/placeholder/300/200?text=AI+Studios',
+          thumbnail: '/api/preview/30-seconds-to-fly',
         }
       ]
     },
@@ -63,7 +63,7 @@ export default function HomePage() {
           id: 'support',
           name: 'Front CRM Acai Integration',
           description: 'Support ticket system with AI assistant',
-          thumbnail: '/api/placeholder/300/200?text=CRM+Integration',
+          thumbnail: '/api/preview/support',
         }
       ]
     },
