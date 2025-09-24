@@ -2,129 +2,53 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import projectsData from '@/data/projects.json';
+import { generateThumbnail, getRelativeTime } from '@/utils/thumbnails';
 
 export default function HomePage() {
   const router = useRouter();
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null);
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
-  const [lastUpdatedTimes, setLastUpdatedTimes] = useState<Record<string, Date>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [lastUpdatedTimes, setLastUpdatedTimes] = useState<Record<string, Date>>({});
 
-  const clients = [
-    {
-      id: 'amexgbt',
-      name: 'AmexGBT',
-      description: 'American Express Global Business Travel',
-      color: 'bg-gradient-to-br from-blue-800 to-blue-950',
-      uiLibrary: 'Custom UI Components',
-      prototypes: [
-        {
-          id: 'travel-toolbox-feedback',
-          name: 'Travel Toolbox',
-          description: 'Travel management and feedback system',
-          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#1e40af"/>
-              <rect x="50" y="50" width="300" height="150" rx="12" fill="#3b82f6" opacity="0.8"/>
-              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
-              <rect x="80" y="120" width="180" height="16" rx="4" fill="white" opacity="0.7"/>
-              <rect x="80" y="150" width="200" height="16" rx="4" fill="white" opacity="0.7"/>
-            </svg>
-          `),
-        },
-        {
-          id: 'ai-studios',
-          name: 'AI Studios',
-          description: 'AI-powered flight booking and support services',
-          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#7c3aed"/>
-              <rect x="50" y="50" width="300" height="150" rx="12" fill="#8b5cf6" opacity="0.8"/>
-              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
-              <rect x="80" y="120" width="160" height="16" rx="4" fill="white" opacity="0.7"/>
-              <rect x="80" y="150" width="220" height="16" rx="4" fill="white" opacity="0.7"/>
-            </svg>
-          `),
-        }
-      ]
-    },
-    {
-      id: 'teamstack',
-      name: 'Teamstack',
-      description: 'Team collaboration and productivity platform',
-      color: 'bg-gradient-to-br from-orange-600 to-orange-800',
-      uiLibrary: 'Custom UI Components',
-      prototypes: [
-        {
-          id: 'teamstack-dashboard',
-          name: 'Team Dashboard',
-          description: 'Collaborative workspace and project management',
-          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#ea580c"/>
-              <rect x="50" y="50" width="300" height="150" rx="12" fill="#f97316" opacity="0.8"/>
-              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
-              <rect x="80" y="120" width="190" height="16" rx="4" fill="white" opacity="0.7"/>
-              <rect x="80" y="150" width="210" height="16" rx="4" fill="white" opacity="0.7"/>
-            </svg>
-          `),
-        }
-      ]
-    },
-    {
-      id: 'simsalasim',
-      name: 'Simsalasim',
-      description: 'Digital innovation and creative solutions',
-      color: 'bg-gradient-to-br from-black to-gray-800',
-      uiLibrary: 'Custom UI Components',
-      prototypes: [
-        {
-          id: 'creative-studio',
-          name: 'Creative Studio',
-          description: 'Digital design and innovation platform',
-          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#1f2937"/>
-              <rect x="50" y="50" width="300" height="150" rx="12" fill="#374151" opacity="0.8"/>
-              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
-              <rect x="80" y="120" width="170" height="16" rx="4" fill="white" opacity="0.7"/>
-              <rect x="80" y="150" width="230" height="16" rx="4" fill="white" opacity="0.7"/>
-            </svg>
-          `),
-        }
-      ]
-    },
-    {
-      id: 'acai-travel',
-      name: 'AcaiTravel',
-      description: 'Travel management platform',
-      color: 'bg-gradient-to-br from-indigo-700 to-indigo-900',
-      uiLibrary: 'Custom UI Components',
-      prototypes: [
-        {
-          id: 'support',
-          name: 'Front CRM Acai Integration',
-          description: 'Support ticket system with AI assistant',
-          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="250" fill="#059669"/>
-              <rect x="50" y="50" width="300" height="150" rx="12" fill="#10b981" opacity="0.8"/>
-              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
-              <rect x="80" y="120" width="200" height="16" rx="4" fill="white" opacity="0.7"/>
-              <rect x="80" y="150" width="160" height="16" rx="4" fill="white" opacity="0.7"/>
-            </svg>
-          `),
-        }
-      ]
-    },
-  ];
+  // Load clients from JSON and add thumbnails
+  const clients = projectsData.clients.map(client => ({
+    ...client,
+    prototypes: client.prototypes.map(prototype => ({
+      ...prototype,
+      thumbnail: generateThumbnail(prototype.colorTheme),
+      lastUpdated: lastUpdatedTimes[prototype.id] || new Date(prototype.lastUpdated)
+    }))
+  }));
+
 
   const handleClientSelect = (clientId: string) => {
     setSelectedClient(clientId);
   };
 
-  const handlePrototypeSelect = (prototypeId: string) => {
+  const handlePrototypeSelect = async (prototypeId: string) => {
     setSelectedEnvironment(prototypeId);
+    
+    // Update the project timestamp when accessed
+    try {
+      await fetch('/api/update-project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          projectId: prototypeId,
+          description: 'Project accessed'
+        }),
+      });
+      
+      // Refresh the timestamps
+      fetchLastUpdatedTimes();
+    } catch (error) {
+      console.log('Could not update project timestamp:', error);
+    }
+    
     setTimeout(() => {
       router.push(`/${prototypeId}`);
     }, 500);
@@ -210,16 +134,15 @@ export default function HomePage() {
         setLastUpdatedTimes(times);
       }
     } catch (error) {
-      console.log('Could not fetch last updated times, using fallback');
-      // Fallback to current time minus some days for demo
-      const fallbackTimes: Record<string, Date> = {
-        'travel-toolbox-feedback': new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        'ai-studios': new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        'support': new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        'teamstack-dashboard': new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        'creative-studio': new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
-      };
-      setLastUpdatedTimes(fallbackTimes);
+      console.log('Could not fetch last updated times, using JSON defaults');
+      // Use the timestamps from the JSON file as fallback
+      const times: Record<string, Date> = {};
+      projectsData.clients.forEach(client => {
+        client.prototypes.forEach(prototype => {
+          times[prototype.id] = new Date(prototype.lastUpdated);
+        });
+      });
+      setLastUpdatedTimes(times);
     }
   };
 
@@ -227,18 +150,6 @@ export default function HomePage() {
     fetchLastUpdatedTimes();
   }, []);
 
-  const getRelativeTime = (date: Date) => {
-    const now = new Date();
-    const diffInMs = now.getTime() - date.getTime();
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    
-    if (diffInDays === 0) return 'Updated today';
-    if (diffInDays === 1) return 'Updated yesterday';
-    if (diffInDays < 7) return `Updated ${diffInDays} days ago`;
-    if (diffInDays < 30) return `Updated ${Math.floor(diffInDays / 7)} weeks ago`;
-    if (diffInDays < 365) return `Updated ${Math.floor(diffInDays / 30)} months ago`;
-    return `Updated ${Math.floor(diffInDays / 365)} years ago`;
-  };
 
   if (selectedEnvironment) {
     const client = clients.find(c => c.prototypes.some(p => p.id === selectedEnvironment));

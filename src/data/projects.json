@@ -1,0 +1,91 @@
+{
+  "clients": [
+    {
+      "id": "amexgbt",
+      "name": "AmexGBT",
+      "description": "American Express Global Business Travel",
+      "color": "bg-gradient-to-br from-blue-800 to-blue-950",
+      "uiLibrary": "Custom UI Components",
+      "prototypes": [
+        {
+          "id": "travel-toolbox-feedback",
+          "name": "Travel Toolbox",
+          "description": "Travel management and feedback system",
+          "lastUpdated": "2025-09-19T00:00:00.000Z",
+          "colorTheme": {
+            "primary": "#1e40af",
+            "secondary": "#3b82f6"
+          }
+        },
+        {
+          "id": "ai-studios",
+          "name": "AI Studios",
+          "description": "AI-powered flight booking and support services",
+          "lastUpdated": "2025-09-24T05:54:26.360Z",
+          "colorTheme": {
+            "primary": "#7c3aed",
+            "secondary": "#8b5cf6"
+          },
+          "updateDescription": "Updated AI Studios with new features"
+        }
+      ]
+    },
+    {
+      "id": "teamstack",
+      "name": "Teamstack",
+      "description": "Team collaboration and productivity platform",
+      "color": "bg-gradient-to-br from-orange-600 to-orange-800",
+      "uiLibrary": "Custom UI Components",
+      "prototypes": [
+        {
+          "id": "teamstack-dashboard",
+          "name": "Team Dashboard",
+          "description": "Collaborative workspace and project management",
+          "lastUpdated": "2025-09-21T00:00:00.000Z",
+          "colorTheme": {
+            "primary": "#ea580c",
+            "secondary": "#f97316"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simsalasim",
+      "name": "Simsalasim",
+      "description": "Digital innovation and creative solutions",
+      "color": "bg-gradient-to-br from-black to-gray-800",
+      "uiLibrary": "Custom UI Components",
+      "prototypes": [
+        {
+          "id": "creative-studio",
+          "name": "Creative Studio",
+          "description": "Digital design and innovation platform",
+          "lastUpdated": "2025-09-20T00:00:00.000Z",
+          "colorTheme": {
+            "primary": "#1f2937",
+            "secondary": "#374151"
+          }
+        }
+      ]
+    },
+    {
+      "id": "acai-travel",
+      "name": "AcaiTravel",
+      "description": "Travel management platform",
+      "color": "bg-gradient-to-br from-indigo-700 to-indigo-900",
+      "uiLibrary": "Custom UI Components",
+      "prototypes": [
+        {
+          "id": "support",
+          "name": "Front CRM Acai Integration",
+          "description": "Support ticket system with AI assistant",
+          "lastUpdated": "2025-09-17T00:00:00.000Z",
+          "colorTheme": {
+            "primary": "#059669",
+            "secondary": "#10b981"
+          }
+        }
+      ]
+    }
+  ]
+}
