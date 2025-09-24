@@ -8,7 +8,7 @@ export async function GET(
   const { slug } = params;
   
   // Valid prototype slugs
-  const validSlugs = ['travel-toolbox-feedback', '30-seconds-to-fly', 'support'];
+  const validSlugs = ['travel-toolbox-feedback', 'ai-studios', 'support'];
   
   if (!validSlugs.includes(slug)) {
     return NextResponse.json({ error: 'Invalid prototype slug' }, { status: 404 });

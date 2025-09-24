@@ -22,13 +22,29 @@ export default function HomePage() {
           id: 'travel-toolbox-feedback',
           name: 'Travel Toolbox',
           description: 'Travel management and feedback system',
-          thumbnail: '/api/preview/travel-toolbox-feedback',
+          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="250" fill="#1e40af"/>
+              <rect x="50" y="50" width="300" height="150" rx="12" fill="#3b82f6" opacity="0.8"/>
+              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
+              <rect x="80" y="120" width="180" height="16" rx="4" fill="white" opacity="0.7"/>
+              <rect x="80" y="150" width="200" height="16" rx="4" fill="white" opacity="0.7"/>
+            </svg>
+          `),
         },
         {
-          id: '30-seconds-to-fly',
+          id: 'ai-studios',
           name: 'AI Studios',
-          description: 'Flight booking and support services',
-          thumbnail: '/api/preview/30-seconds-to-fly',
+          description: 'AI-powered flight booking and support services',
+          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="250" fill="#7c3aed"/>
+              <rect x="50" y="50" width="300" height="150" rx="12" fill="#8b5cf6" opacity="0.8"/>
+              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
+              <rect x="80" y="120" width="160" height="16" rx="4" fill="white" opacity="0.7"/>
+              <rect x="80" y="150" width="220" height="16" rx="4" fill="white" opacity="0.7"/>
+            </svg>
+          `),
         }
       ]
     },
@@ -63,7 +79,15 @@ export default function HomePage() {
           id: 'support',
           name: 'Front CRM Acai Integration',
           description: 'Support ticket system with AI assistant',
-          thumbnail: '/api/preview/support',
+          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="250" fill="#059669"/>
+              <rect x="50" y="50" width="300" height="150" rx="12" fill="#10b981" opacity="0.8"/>
+              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
+              <rect x="80" y="120" width="200" height="16" rx="4" fill="white" opacity="0.7"/>
+              <rect x="80" y="150" width="160" height="16" rx="4" fill="white" opacity="0.7"/>
+            </svg>
+          `),
         }
       ]
     },
@@ -164,7 +188,7 @@ export default function HomePage() {
       // Fallback to current time minus some days for demo
       const fallbackTimes: Record<string, Date> = {
         'travel-toolbox-feedback': new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        '30-seconds-to-fly': new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        'ai-studios': new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
         'support': new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
       };
       setLastUpdatedTimes(fallbackTimes);

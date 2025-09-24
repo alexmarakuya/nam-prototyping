@@ -12,7 +12,7 @@ export async function GET() {
       const now = new Date();
       const lastUpdatedTimes: Record<string, string> = {
         'travel-toolbox-feedback': new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
-        '30-seconds-to-fly': new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+        'ai-studios': new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
         'support': new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
       };
       
@@ -22,7 +22,7 @@ export async function GET() {
     // Local development - use actual file modification times
     const projectPaths = {
       'travel-toolbox-feedback': 'src/app/travel-toolbox-feedback',
-      '30-seconds-to-fly': 'src/app/30-seconds-to-fly',
+      'ai-studios': 'src/app/ai-studios',
       'support': 'src/app/support',
     };
 
