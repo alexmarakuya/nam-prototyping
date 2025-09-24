@@ -55,7 +55,20 @@ export default function HomePage() {
       color: 'bg-gradient-to-br from-orange-600 to-orange-800',
       uiLibrary: 'Custom UI Components',
       prototypes: [
-        // Prototypes to be added
+        {
+          id: 'teamstack-dashboard',
+          name: 'Team Dashboard',
+          description: 'Collaborative workspace and project management',
+          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="250" fill="#ea580c"/>
+              <rect x="50" y="50" width="300" height="150" rx="12" fill="#f97316" opacity="0.8"/>
+              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
+              <rect x="80" y="120" width="190" height="16" rx="4" fill="white" opacity="0.7"/>
+              <rect x="80" y="150" width="210" height="16" rx="4" fill="white" opacity="0.7"/>
+            </svg>
+          `),
+        }
       ]
     },
     {
@@ -65,7 +78,20 @@ export default function HomePage() {
       color: 'bg-gradient-to-br from-black to-gray-800',
       uiLibrary: 'Custom UI Components',
       prototypes: [
-        // Prototypes to be added
+        {
+          id: 'creative-studio',
+          name: 'Creative Studio',
+          description: 'Digital design and innovation platform',
+          thumbnail: 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="250" fill="#1f2937"/>
+              <rect x="50" y="50" width="300" height="150" rx="12" fill="#374151" opacity="0.8"/>
+              <rect x="80" y="80" width="240" height="20" rx="4" fill="white" opacity="0.9"/>
+              <rect x="80" y="120" width="170" height="16" rx="4" fill="white" opacity="0.7"/>
+              <rect x="80" y="150" width="230" height="16" rx="4" fill="white" opacity="0.7"/>
+            </svg>
+          `),
+        }
       ]
     },
     {
@@ -190,6 +216,8 @@ export default function HomePage() {
         'travel-toolbox-feedback': new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
         'ai-studios': new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
         'support': new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        'teamstack-dashboard': new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        'creative-studio': new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
       };
       setLastUpdatedTimes(fallbackTimes);
     }
