@@ -26,6 +26,8 @@ export async function GET() {
       'travel-toolbox-feedback': 'src/app/travel-toolbox-feedback',
       'ai-studios': 'src/app/ai-studios',
       'support': 'src/app/support',
+      'teamstack-dashboard': 'src/app', // These are placeholder projects, use main app folder
+      'creative-studio': 'src/app', // These are placeholder projects, use main app folder
     };
 
     const lastUpdatedTimes: Record<string, string> = {};
