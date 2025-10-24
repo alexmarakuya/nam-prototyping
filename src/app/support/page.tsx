@@ -763,17 +763,6 @@ Kartik Kapgate`,
                         </div>
                       </div>
 
-                      {/* Need More Help */}
-                      <div className="mb-3">
-                        <h3 className="text-xs font-semibold text-gray-900 mb-2">Need more help to close the case?</h3>
-                        <button 
-                          onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
-                          className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
-                        >
-                          Ask Acai
-                        </button>
-                      </div>
-
                       {/* Smart Response Draft */}
                       <div className="bg-white rounded-lg border border-gray-200">
                         {/* Header */}
@@ -857,6 +846,17 @@ Kartik Kapgate`,
                           </div>
                         </div>
                       </div>
+
+                      {/* Need More Help */}
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mt-3">
+                        <h3 className="text-xs font-semibold text-purple-900 mb-2">Need more help to close the case?</h3>
+                        <button 
+                          onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
+                          className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
+                        >
+                          Ask Acai
+                        </button>
+                      </div>
                     </>
                   );
                 }
@@ -879,17 +879,6 @@ Kartik Kapgate`,
                       <p className="text-xs text-gray-700 leading-relaxed">
                         Kartik Kapgate requested information about the baggage policy for their booking with Iberia. The analysis provided details on carry-on and checked baggage allowances for Economy Class (S and L). No ATC was used for this analysis.
                       </p>
-                    </div>
-
-                    {/* Need More Help */}
-                    <div className="mb-3">
-                      <h3 className="text-xs font-semibold text-gray-900 mb-2">Need more help to close the case?</h3>
-                      <button 
-                        onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
-                        className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
-                      >
-                        Ask Acai
-                      </button>
                     </div>
 
                     {/* Smart Response Draft */}
@@ -991,6 +980,17 @@ Kartik Kapgate`,
                           )}
                         </div>
                       </div>
+                    </div>
+
+                    {/* Need More Help */}
+                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mt-3">
+                      <h3 className="text-xs font-semibold text-purple-900 mb-2">Need more help to close the case?</h3>
+                      <button 
+                        onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
+                      >
+                        Ask Acai
+                      </button>
                     </div>
                   </>
                 );
