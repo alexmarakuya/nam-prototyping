@@ -766,7 +766,10 @@ Kartik Kapgate`,
                       {/* Need More Help */}
                       <div className="mb-3">
                         <h3 className="text-xs font-semibold text-gray-900 mb-2">Need more help to close the case?</h3>
-                        <button className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200">
+                        <button 
+                          onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
+                          className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
+                        >
                           Ask Acai
                         </button>
                       </div>
@@ -881,7 +884,10 @@ Kartik Kapgate`,
                     {/* Need More Help */}
                     <div className="mb-3">
                       <h3 className="text-xs font-semibold text-gray-900 mb-2">Need more help to close the case?</h3>
-                      <button className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200">
+                      <button 
+                        onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
+                      >
                         Ask Acai
                       </button>
                     </div>
