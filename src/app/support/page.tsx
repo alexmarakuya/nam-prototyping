@@ -323,7 +323,7 @@ Kartik Kapgate`,
                         isSelected 
                           ? 'bg-blue-50 border border-blue-200' 
                           : 'hover:bg-gray-50 border border-gray-200'
-                      } ${conversation.isNew ? 'ring-2 ring-green-200 animate-pulse' : ''}`}
+                      } ${conversation.isNew ? 'ring-2 ring-blue-200' : ''}`}
                       onClick={() => {
                         setSelectedConversation(conversation.id);
                         // Mark as read when clicked
@@ -342,9 +342,9 @@ Kartik Kapgate`,
                         <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${getStatusColor(conversation.status, conversation.priority)}`}></div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-sm font-medium truncate ${conversation.isNew ? 'text-green-800' : 'text-gray-900'}`}>
+                            <span className={`text-sm font-medium truncate ${conversation.isNew ? 'text-blue-800' : 'text-gray-900'}`}>
                               {conversation.customer}
-                              {conversation.isNew && <span className="ml-1 text-xs text-green-600">(New)</span>}
+                              {conversation.isNew && <span className="ml-1 text-xs text-blue-600">(New)</span>}
                             </span>
                             <span className="text-xs text-gray-500">{conversation.time}</span>
                           </div>
