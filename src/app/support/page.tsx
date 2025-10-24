@@ -402,7 +402,7 @@ Kartik Kapgate`,
 
             {/* Conversations List */}
             <div className="flex-1 overflow-y-auto p-2">
-              <div className="space-y-1">
+              <div className="space-y-1 email-list">
                 {conversations.map((conversation) => {
                   const isSelected = selectedConversation === conversation.id;
                   const getStatusColor = (status: string, priority: string, isNew: boolean) => {
@@ -727,9 +727,9 @@ Kartik Kapgate`,
 
                 if (conversation.id === 'flight-change-request') {
                   return (
-                    <>
+                    <div className="animate-fadeInUp">
                       {/* Case Overview Header */}
-                      <div className="mb-3">
+                      <div className="mb-3 animate-stagger-1">
                         <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
                         <div className="flex gap-1 mb-2">
                           <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PNR B8X9KL</span>
@@ -738,7 +738,7 @@ Kartik Kapgate`,
                       </div>
 
                       {/* Case Summary */}
-                      <div className="mb-3">
+                      <div className="mb-3 animate-stagger-2">
                         <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
                         <p className="text-xs text-gray-700 leading-relaxed">
                           Maria Rodriguez requests flight change from AA1234 (JFK→LAX) on Sept 26 to Sept 28/29 due to family emergency. Economy ticket requires change fee analysis and alternative flight options.
@@ -746,7 +746,7 @@ Kartik Kapgate`,
                       </div>
 
                       {/* Flight Change Analysis */}
-                      <div className="mb-3">
+                      <div className="mb-3 animate-stagger-3">
                         <h3 className="text-xs font-semibold text-gray-900 mb-1">Change Penalties & Options:</h3>
                         <div className="bg-red-50 border border-red-200 rounded p-2 mb-2">
                           <h4 className="text-xs font-semibold text-red-800 mb-1">Change Fee</h4>
@@ -764,7 +764,7 @@ Kartik Kapgate`,
                       </div>
 
                       {/* Smart Response Draft */}
-                      <div className="bg-white rounded-lg border border-gray-200">
+                      <div className="bg-white rounded-lg border border-gray-200 animate-stagger-4">
                         {/* Header */}
                         <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
                           <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>

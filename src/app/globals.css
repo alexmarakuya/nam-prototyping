@@ -6,23 +6,98 @@ body {
 }
 
 @keyframes pushIn {
-  from {
-    transform: translateY(-100%);
+  0% {
+    transform: translateY(-100%) scale(0.95);
     opacity: 0;
     max-height: 0;
     margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
   }
-  to {
-    transform: translateY(0);
+  30% {
+    transform: translateY(-30%) scale(0.98);
+    opacity: 0.3;
+    max-height: 60px;
+    margin-bottom: 0.125rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-width: 1px;
+  }
+  70% {
+    transform: translateY(-5%) scale(1.02);
+    opacity: 0.8;
+    max-height: 120px;
+    margin-bottom: 0.375rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+  100% {
+    transform: translateY(0) scale(1);
     opacity: 1;
     max-height: 200px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
   }
 }
 
 .animate-pushIn {
-  animation: pushIn 0.6s ease-out;
+  animation: pushIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
+  transform-origin: top center;
+}
+
+/* Smooth transition for existing emails being pushed down */
+.email-list {
+  transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+/* Individual email items get smooth transitions */
+.email-list > * {
+  transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes staggerFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-stagger-1 {
+  animation: staggerFadeInUp 0.4s ease-out 0.1s both;
+}
+
+.animate-stagger-2 {
+  animation: staggerFadeInUp 0.4s ease-out 0.2s both;
+}
+
+.animate-stagger-3 {
+  animation: staggerFadeInUp 0.4s ease-out 0.3s both;
+}
+
+.animate-stagger-4 {
+  animation: staggerFadeInUp 0.4s ease-out 0.4s both;
 }
 
 .border-3 {
