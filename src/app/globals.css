@@ -19,3 +19,7 @@ body {
 .animate-slideIn {
   animation: slideIn 0.5s ease-in-out;
 }
+
+.border-3 {
+  border-width: 3px;
+}
