@@ -9,7 +9,6 @@ export default function SupportPage() {
   const [showAIAnalysis, setShowAIAnalysis] = useState<Record<string, boolean>>({});
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState<Record<string, boolean>>({});
   const [copiedResponse, setCopiedResponse] = useState<Record<string, boolean>>({});
-  const [isFadingOut, setIsFadingOut] = useState<Record<string, boolean>>({});
   const [conversations, setConversations] = useState([
     {
       id: 'baggage-policy',
@@ -904,7 +903,7 @@ Kartik Kapgate`,
                           Ask Acai
                         </button>
                       </div>
-                    </>
+                    </div>
                   );
                 }
 
