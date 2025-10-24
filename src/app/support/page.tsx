@@ -763,6 +763,14 @@ Kartik Kapgate`,
                         </div>
                       </div>
 
+                      {/* Need More Help */}
+                      <div className="mb-3">
+                        <h3 className="text-xs font-semibold text-gray-900 mb-2">Need more help to close the case?</h3>
+                        <button className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200">
+                          Ask Acai
+                        </button>
+                      </div>
+
                       {/* Smart Response Draft */}
                       <div className="bg-white rounded-lg border border-gray-200">
                         {/* Header */}
