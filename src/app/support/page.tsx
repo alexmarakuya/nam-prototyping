@@ -8,6 +8,7 @@ export default function SupportPage() {
   const [showExpandedResponse, setShowExpandedResponse] = useState(false);
   const [showAIAnalysis, setShowAIAnalysis] = useState<Record<string, boolean>>({});
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState<Record<string, boolean>>({});
+  const [copiedResponse, setCopiedResponse] = useState<Record<string, boolean>>({});
   const [conversations, setConversations] = useState([
     {
       id: 'baggage-policy',
@@ -93,6 +94,81 @@ export default function SupportPage() {
         [conversationId]: true
       }));
     }, 2000);
+  };
+
+  const handleCopyResponse = async (conversationId: string) => {
+    try {
+      // Get the response text based on conversation type
+      let responseText = '';
+      
+      if (conversationId === 'flight-change-request') {
+        responseText = `Hi Maria,
+
+I understand you need to change your flight due to a family emergency. I can help you with that.
+
+Change Fee & Options
+Your Economy ticket has a change fee of $200 USD plus any fare difference.
+
+Here are your best options:
+• Sept 29, AA1234 at 2:30 PM - Same flight, no fare difference (Total: $200)
+• Sept 28, AA1240 at 6:30 PM - $25 fare difference (Total: $225)
+• Sept 28, AA1236 at 1:15 PM - $50 fare difference (Total: $250)
+
+I recommend the September 29th option as it's the most cost-effective. Would you like me to proceed with this change?
+
+I can process this immediately to secure your new seat.
+
+Best regards,
+Acai Travel Support Team`;
+      } else {
+        // Default baggage policy response
+        responseText = `Hi Kartik,
+
+Thanks for contacting Acai Travel.
+
+Here is the baggage policy for your booking (PNR: C7Q3SR) with Iberia:
+
+Carry-On Baggage
+• Economy / Premium Economy: 1 cabin bag (max size 56x40x25 cm, max weight 10 kg) and 1 personal accessory (max size 30x40x15 cm).
+• Business Class (Short/Medium Haul): 1 cabin bag (max size 56x40x25 cm, max weight 14 kg) and 1 personal accessory.
+• Business Plus (Long Haul): 2 cabin bags (each max size 56x40x25 cm, max weight 14 kg) and 1 personal accessory.
+
+Checked Baggage
+Economy Class: Typically 1 piece (max weight 23 kg, max dimensions 158 cm total).
+Business Class: 2 or more pieces (max weight 23 kg each).
+
+Special Items
+• Sports Equipment: Must be pre-booked and paid for.
+• Musical Instruments: Included in the baggage allowance for Iberia Plus members.
+• Pets: Not allowed in the cabin or hold on flights to/from London but can be transported as cargo.
+
+For more details, you can visit Iberia's official baggage pages.
+
+Let me know if you have any further questions or need assistance.
+
+Thanks,
+Acai Travel Virtual Agent`;
+      }
+
+      await navigator.clipboard.writeText(responseText);
+      
+      // Show copied feedback
+      setCopiedResponse(prev => ({
+        ...prev,
+        [conversationId]: true
+      }));
+      
+      // Hide feedback after 2 seconds
+      setTimeout(() => {
+        setCopiedResponse(prev => ({
+          ...prev,
+          [conversationId]: false
+        }));
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Failed to copy response:', error);
+    }
   };
 
   const renderConversationContent = () => {
@@ -694,14 +770,25 @@ Kartik Kapgate`,
                           <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
                           <div className="flex items-center gap-1">
                             <div className="relative group">
-                              <button className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110">
-                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                                </svg>
+                              <button 
+                                onClick={() => handleCopyResponse(conversation.id)}
+                                className={`p-0.5 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110 ${
+                                  copiedResponse[conversation.id] ? 'text-green-600' : 'text-gray-600 hover:text-gray-800'
+                                }`}
+                              >
+                                {copiedResponse[conversation.id] ? (
+                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                  </svg>
+                                ) : (
+                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                  </svg>
+                                )}
                               </button>
                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                                Copy
+                                {copiedResponse[conversation.id] ? 'Copied!' : 'Copy'}
                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
                               </div>
                             </div>
@@ -803,14 +890,25 @@ Kartik Kapgate`,
                         <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
                         <div className="flex items-center gap-1">
                           <div className="relative group">
-                            <button className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110">
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                              </svg>
+                            <button 
+                              onClick={() => handleCopyResponse(conversation.id)}
+                              className={`p-0.5 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110 ${
+                                copiedResponse[conversation.id] ? 'text-green-600' : 'text-gray-600 hover:text-gray-800'
+                              }`}
+                            >
+                              {copiedResponse[conversation.id] ? (
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                              ) : (
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                </svg>
+                              )}
                             </button>
                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                              Copy
+                              {copiedResponse[conversation.id] ? 'Copied!' : 'Copy'}
                               <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
                             </div>
                           </div>
