@@ -705,186 +705,194 @@ Kartik Kapgate`,
                 // Show progressive loading if AI is processing OR if we have progressive content (but only for Maria's email)
                 if ((isLoading || hasProgressiveContent) && conversation.id === 'flight-change-request') {
                   
-                  // Determine which section should show skeleton (next one to load)
+                  // Determine which section should show (either skeleton or content)
                   const sections = ['overview', 'summary', 'analysis', 'response'];
-                  const currentSkeletonSection = sections.find(section => !loaded.includes(section));
+                  const currentSection = sections.find(section => !loaded.includes(section)) || sections[sections.length - 1];
                   
                   return (
                     <div className="space-y-4">
                       {/* Case Overview */}
-                      {loaded.includes('overview') && (
-                        <div className="mb-3 animate-fadeInUp">
-                          <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
-                          <div className="flex gap-1 mb-2">
-                            <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PNR B8X9KL</span>
-                            <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">Flight AA1234</span>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {currentSkeletonSection === 'overview' && (
-                        <div className="mb-3">
-                          <div className="skeleton h-4 w-24 rounded mb-2"></div>
-                          <div className="flex gap-1 mb-2">
-                            <div className="skeleton h-6 w-20 rounded"></div>
-                            <div className="skeleton h-6 w-24 rounded"></div>
-                          </div>
-                        </div>
+                      {(currentSection === 'overview' || loaded.includes('overview')) && (
+                        <>
+                          {loaded.includes('overview') ? (
+                            <div className="mb-3 animate-fadeInUp">
+                              <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
+                              <div className="flex gap-1 mb-2">
+                                <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PNR B8X9KL</span>
+                                <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">Flight AA1234</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="mb-3">
+                              <div className="skeleton h-4 w-24 rounded mb-2"></div>
+                              <div className="flex gap-1 mb-2">
+                                <div className="skeleton h-6 w-20 rounded"></div>
+                                <div className="skeleton h-6 w-24 rounded"></div>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
 
                       {/* Case Summary */}
-                      {loaded.includes('summary') && (
-                        <div className="mb-3 animate-fadeInUp">
-                          <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
-                          <p className="text-xs text-gray-700 leading-relaxed">
-                            Maria Rodriguez requests flight change from AA1234 (JFK→LAX) on Sept 26 to Sept 28/29 due to family emergency. Economy ticket requires change fee analysis and alternative flight options.
-                          </p>
-                        </div>
-                      )}
-                      
-                      {currentSkeletonSection === 'summary' && (
-                        <div className="mb-3">
-                          <div className="skeleton h-3 w-20 rounded mb-1"></div>
-                          <div className="space-y-1">
-                            <div className="skeleton h-3 w-full rounded"></div>
-                            <div className="skeleton h-3 w-4/5 rounded"></div>
-                            <div className="skeleton h-3 w-3/4 rounded"></div>
-                          </div>
-                        </div>
+                      {(currentSection === 'summary' || loaded.includes('summary')) && loaded.includes('overview') && (
+                        <>
+                          {loaded.includes('summary') ? (
+                            <div className="mb-3 animate-fadeInUp">
+                              <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
+                              <p className="text-xs text-gray-700 leading-relaxed">
+                                Maria Rodriguez requests flight change from AA1234 (JFK→LAX) on Sept 26 to Sept 28/29 due to family emergency. Economy ticket requires change fee analysis and alternative flight options.
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="mb-3">
+                              <div className="skeleton h-3 w-20 rounded mb-1"></div>
+                              <div className="space-y-1">
+                                <div className="skeleton h-3 w-full rounded"></div>
+                                <div className="skeleton h-3 w-4/5 rounded"></div>
+                                <div className="skeleton h-3 w-3/4 rounded"></div>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
 
                       {/* Analysis Content */}
-                      {loaded.includes('analysis') && (
-                        <div className="mb-3 animate-fadeInUp">
-                          <h3 className="text-xs font-semibold text-gray-900 mb-1">Change Penalties & Options:</h3>
-                          <div className="bg-red-50 border border-red-200 rounded p-2 mb-2">
-                            <h4 className="text-xs font-semibold text-red-800 mb-1">Change Fee</h4>
-                            <p className="text-xs text-red-700">$200 USD + fare difference</p>
-                          </div>
-                          
-                          <div className="bg-blue-50 border border-blue-200 rounded p-2">
-                            <h4 className="text-xs font-semibold text-blue-800 mb-1">Available Alternatives</h4>
-                            <div className="space-y-1 text-xs text-blue-700">
-                              <div>• Sept 28: AA1236 (JFK→LAX) 1:15 PM - $50 fare diff</div>
-                              <div>• Sept 28: AA1240 (JFK→LAX) 6:30 PM - $25 fare diff</div>
-                              <div>• Sept 29: AA1234 (JFK→LAX) 2:30 PM - No fare diff</div>
+                      {(currentSection === 'analysis' || loaded.includes('analysis')) && loaded.includes('summary') && (
+                        <>
+                          {loaded.includes('analysis') ? (
+                            <div className="mb-3 animate-fadeInUp">
+                              <h3 className="text-xs font-semibold text-gray-900 mb-1">Change Penalties & Options:</h3>
+                              <div className="bg-red-50 border border-red-200 rounded p-2 mb-2">
+                                <h4 className="text-xs font-semibold text-red-800 mb-1">Change Fee</h4>
+                                <p className="text-xs text-red-700">$200 USD + fare difference</p>
+                              </div>
+                              
+                              <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                                <h4 className="text-xs font-semibold text-blue-800 mb-1">Available Alternatives</h4>
+                                <div className="space-y-1 text-xs text-blue-700">
+                                  <div>• Sept 28: AA1236 (JFK→LAX) 1:15 PM - $50 fare diff</div>
+                                  <div>• Sept 28: AA1240 (JFK→LAX) 6:30 PM - $25 fare diff</div>
+                                  <div>• Sept 29: AA1234 (JFK→LAX) 2:30 PM - No fare diff</div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {currentSkeletonSection === 'analysis' && (
-                        <div className="mb-3">
-                          <div className="skeleton h-3 w-32 rounded mb-2"></div>
-                          <div className="bg-gray-50 border border-gray-200 rounded p-2 mb-2">
-                            <div className="skeleton h-3 w-16 rounded mb-1"></div>
-                            <div className="skeleton h-3 w-24 rounded"></div>
-                          </div>
-                          <div className="bg-gray-50 border border-gray-200 rounded p-2">
-                            <div className="skeleton h-3 w-28 rounded mb-1"></div>
-                            <div className="space-y-1">
-                              <div className="skeleton h-2 w-full rounded"></div>
-                              <div className="skeleton h-2 w-5/6 rounded"></div>
-                              <div className="skeleton h-2 w-4/5 rounded"></div>
+                          ) : (
+                            <div className="mb-3">
+                              <div className="skeleton h-3 w-32 rounded mb-2"></div>
+                              <div className="bg-gray-50 border border-gray-200 rounded p-2 mb-2">
+                                <div className="skeleton h-3 w-16 rounded mb-1"></div>
+                                <div className="skeleton h-3 w-24 rounded"></div>
+                              </div>
+                              <div className="bg-gray-50 border border-gray-200 rounded p-2">
+                                <div className="skeleton h-3 w-28 rounded mb-1"></div>
+                                <div className="space-y-1">
+                                  <div className="skeleton h-2 w-full rounded"></div>
+                                  <div className="skeleton h-2 w-5/6 rounded"></div>
+                                  <div className="skeleton h-2 w-4/5 rounded"></div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          )}
+                        </>
                       )}
 
                       {/* Smart Response */}
-                      {loaded.includes('response') && (
-                        <div className="bg-white rounded-lg border border-gray-200 animate-fadeInUp">
-                          <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
-                            <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
-                            <div className="flex items-center gap-1">
-                              <div className="relative group">
-                                <button 
-                                  onClick={() => handleCopyResponse(conversation.id)}
-                                  className={`p-0.5 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110 ${
-                                    copiedResponse[conversation.id] ? 'text-green-600' : 'text-gray-600 hover:text-gray-800'
-                                  }`}
-                                >
-                                  {copiedResponse[conversation.id] ? (
-                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                  ) : (
-                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                                    </svg>
-                                  )}
-                                </button>
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                                  {copiedResponse[conversation.id] ? 'Copied!' : 'Copy'}
-                                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                      {(currentSection === 'response' || loaded.includes('response')) && loaded.includes('analysis') && (
+                        <>
+                          {loaded.includes('response') ? (
+                            <div className="bg-white rounded-lg border border-gray-200 animate-fadeInUp">
+                              <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
+                                <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
+                                <div className="flex items-center gap-1">
+                                  <div className="relative group">
+                                    <button 
+                                      onClick={() => handleCopyResponse(conversation.id)}
+                                      className={`p-0.5 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110 ${
+                                        copiedResponse[conversation.id] ? 'text-green-600' : 'text-gray-600 hover:text-gray-800'
+                                      }`}
+                                    >
+                                      {copiedResponse[conversation.id] ? (
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                      ) : (
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                        </svg>
+                                      )}
+                                    </button>
+                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                      {copiedResponse[conversation.id] ? 'Copied!' : 'Copy'}
+                                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                                    </div>
+                                  </div>
+                                  <div className="relative group">
+                                    <button 
+                                      onClick={() => setShowExpandedResponse(!showExpandedResponse)}
+                                      className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110"
+                                    >
+                                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                        {showExpandedResponse ? (
+                                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                                        ) : (
+                                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                        )}
+                                      </svg>
+                                    </button>
+                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                      {showExpandedResponse ? 'Collapse' : 'Expand'}
+                                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                              <div className="relative group">
-                                <button 
-                                  onClick={() => setShowExpandedResponse(!showExpandedResponse)}
-                                  className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110"
-                                >
-                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                    {showExpandedResponse ? (
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-                                    ) : (
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                                    )}
-                                  </svg>
-                                </button>
-                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                                  {showExpandedResponse ? 'Collapse' : 'Expand'}
-                                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
 
-                          <div className="px-3 py-3">
-                            <div className={`relative ${!showExpandedResponse ? 'max-h-20 overflow-hidden' : ''}`}>
-                              <div className="space-y-2 text-xs text-gray-700">
-                                <p>Hi Maria,</p>
-                                <p>I understand you need to change your flight due to a family emergency. I can help you with that.</p>
-                                
-                                <div className="mt-2">
-                                  <p className="font-semibold">Change Fee & Options:</p>
-                                  <p>• Standard change fee: $200 USD</p>
-                                  <p>• Best option: Sept 29 flight (no fare difference)</p>
-                                  <p>• Total cost: $200 USD</p>
+                              <div className="px-3 py-3">
+                                <div className={`relative ${!showExpandedResponse ? 'max-h-20 overflow-hidden' : ''}`}>
+                                  <div className="space-y-2 text-xs text-gray-700">
+                                    <p>Hi Maria,</p>
+                                    <p>I understand you need to change your flight due to a family emergency. I can help you with that.</p>
+                                    
+                                    <div className="mt-2">
+                                      <p className="font-semibold">Change Fee & Options:</p>
+                                      <p>• Standard change fee: $200 USD</p>
+                                      <p>• Best option: Sept 29 flight (no fare difference)</p>
+                                      <p>• Total cost: $200 USD</p>
+                                    </div>
+                                    
+                                    <p className="mt-2">I can process this change immediately. Would you like me to proceed?</p>
+                                    
+                                    <p className="mt-2">Best regards,</p>
+                                    <p>Acai Travel Support Team</p>
+                                  </div>
+                                  
+                                  {!showExpandedResponse && (
+                                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                                  )}
                                 </div>
-                                
-                                <p className="mt-2">I can process this change immediately. Would you like me to proceed?</p>
-                                
-                                <p className="mt-2">Best regards,</p>
-                                <p>Acai Travel Support Team</p>
                               </div>
-                              
-                              {!showExpandedResponse && (
-                                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
-                              )}
                             </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {currentSkeletonSection === 'response' && (
-                        <div className="bg-white rounded-lg border border-gray-200">
-                          <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200">
-                            <div className="skeleton h-3 w-28 rounded"></div>
-                            <div className="flex gap-1">
-                              <div className="skeleton h-4 w-4 rounded"></div>
-                              <div className="skeleton h-4 w-4 rounded"></div>
+                          ) : (
+                            <div className="bg-white rounded-lg border border-gray-200">
+                              <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200">
+                                <div className="skeleton h-3 w-28 rounded"></div>
+                                <div className="flex gap-1">
+                                  <div className="skeleton h-4 w-4 rounded"></div>
+                                  <div className="skeleton h-4 w-4 rounded"></div>
+                                </div>
+                              </div>
+                              <div className="px-3 py-3 space-y-2">
+                                <div className="skeleton h-3 w-16 rounded"></div>
+                                <div className="skeleton h-3 w-full rounded"></div>
+                                <div className="skeleton h-3 w-4/5 rounded"></div>
+                                <div className="skeleton h-3 w-3/4 rounded"></div>
+                                <div className="skeleton h-3 w-5/6 rounded"></div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="px-3 py-3 space-y-2">
-                            <div className="skeleton h-3 w-16 rounded"></div>
-                            <div className="skeleton h-3 w-full rounded"></div>
-                            <div className="skeleton h-3 w-4/5 rounded"></div>
-                            <div className="skeleton h-3 w-3/4 rounded"></div>
-                            <div className="skeleton h-3 w-5/6 rounded"></div>
-                          </div>
-                        </div>
+                          )}
+                        </>
                       )}
                     </div>
                   );
