@@ -705,10 +705,14 @@ Kartik Kapgate`,
                 // Show progressive loading if AI is processing OR if we have progressive content (but only for Maria's email)
                 if ((isLoading || hasProgressiveContent) && conversation.id === 'flight-change-request') {
                   
+                  // Determine which section should show skeleton (next one to load)
+                  const sections = ['overview', 'summary', 'analysis', 'response'];
+                  const currentSkeletonSection = sections.find(section => !loaded.includes(section));
+                  
                   return (
                     <div className="space-y-4">
                       {/* Case Overview */}
-                      {loaded.includes('overview') ? (
+                      {loaded.includes('overview') && (
                         <div className="mb-3 animate-fadeInUp">
                           <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
                           <div className="flex gap-1 mb-2">
@@ -716,7 +720,9 @@ Kartik Kapgate`,
                             <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">Flight AA1234</span>
                           </div>
                         </div>
-                      ) : (
+                      )}
+                      
+                      {currentSkeletonSection === 'overview' && (
                         <div className="mb-3">
                           <div className="skeleton h-4 w-24 rounded mb-2"></div>
                           <div className="flex gap-1 mb-2">
@@ -727,14 +733,16 @@ Kartik Kapgate`,
                       )}
 
                       {/* Case Summary */}
-                      {loaded.includes('summary') ? (
+                      {loaded.includes('summary') && (
                         <div className="mb-3 animate-fadeInUp">
                           <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
                           <p className="text-xs text-gray-700 leading-relaxed">
                             Maria Rodriguez requests flight change from AA1234 (JFK→LAX) on Sept 26 to Sept 28/29 due to family emergency. Economy ticket requires change fee analysis and alternative flight options.
                           </p>
                         </div>
-                      ) : (
+                      )}
+                      
+                      {currentSkeletonSection === 'summary' && (
                         <div className="mb-3">
                           <div className="skeleton h-3 w-20 rounded mb-1"></div>
                           <div className="space-y-1">
@@ -746,7 +754,7 @@ Kartik Kapgate`,
                       )}
 
                       {/* Analysis Content */}
-                      {loaded.includes('analysis') ? (
+                      {loaded.includes('analysis') && (
                         <div className="mb-3 animate-fadeInUp">
                           <h3 className="text-xs font-semibold text-gray-900 mb-1">Change Penalties & Options:</h3>
                           <div className="bg-red-50 border border-red-200 rounded p-2 mb-2">
@@ -763,7 +771,9 @@ Kartik Kapgate`,
                             </div>
                           </div>
                         </div>
-                      ) : (
+                      )}
+                      
+                      {currentSkeletonSection === 'analysis' && (
                         <div className="mb-3">
                           <div className="skeleton h-3 w-32 rounded mb-2"></div>
                           <div className="bg-gray-50 border border-gray-200 rounded p-2 mb-2">
@@ -782,7 +792,7 @@ Kartik Kapgate`,
                       )}
 
                       {/* Smart Response */}
-                      {loaded.includes('response') ? (
+                      {loaded.includes('response') && (
                         <div className="bg-white rounded-lg border border-gray-200 animate-fadeInUp">
                           <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
                             <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
@@ -856,7 +866,9 @@ Kartik Kapgate`,
                             </div>
                           </div>
                         </div>
-                      ) : (
+                      )}
+                      
+                      {currentSkeletonSection === 'response' && (
                         <div className="bg-white rounded-lg border border-gray-200">
                           <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200">
                             <div className="skeleton h-3 w-28 rounded"></div>
