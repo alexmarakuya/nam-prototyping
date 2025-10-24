@@ -308,7 +308,8 @@ Kartik Kapgate`,
               <div className="space-y-1">
                 {conversations.map((conversation) => {
                   const isSelected = selectedConversation === conversation.id;
-                  const getStatusColor = (status: string, priority: string) => {
+                  const getStatusColor = (status: string, priority: string, isNew: boolean) => {
+                    if (isNew) return 'bg-blue-500';
                     if (priority === 'high') return 'bg-red-500';
                     if (status === 'active') return 'bg-purple-500';
                     if (status === 'draft') return 'bg-blue-500';
@@ -323,7 +324,7 @@ Kartik Kapgate`,
                         isSelected 
                           ? 'bg-blue-50 border border-blue-200' 
                           : 'hover:bg-gray-50 border border-gray-200'
-                      } ${conversation.isNew ? 'ring-2 ring-blue-200' : ''}`}
+                      } ${conversation.isNew ? 'animate-slideIn' : ''}`}
                       onClick={() => {
                         setSelectedConversation(conversation.id);
                         // Mark as read when clicked
@@ -339,7 +340,7 @@ Kartik Kapgate`,
                       }}
                     >
                       <div className="flex items-start gap-2">
-                        <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${getStatusColor(conversation.status, conversation.priority)}`}></div>
+                        <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${getStatusColor(conversation.status, conversation.priority, conversation.isNew)}`}></div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <span className={`text-sm font-medium truncate ${conversation.isNew ? 'text-blue-800' : 'text-gray-900'}`}>
