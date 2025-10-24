@@ -421,7 +421,7 @@ Kartik Kapgate`,
                         isSelected 
                           ? 'bg-blue-50 border border-blue-200' 
                           : 'hover:bg-gray-50 border border-gray-200'
-                      } ${conversation.isNew ? 'animate-pushIn bg-yellow-100 border-yellow-300' : ''}`}
+                      } ${conversation.isNew ? 'animate-pushIn' : ''}`}
                       onClick={() => {
                         setSelectedConversation(conversation.id);
                         // Mark as read when clicked
@@ -687,7 +687,7 @@ Kartik Kapgate`,
                 // Show skeleton loader if AI is processing
                 if (isLoading) {
                   return (
-                    <div className="space-y-4 bg-red-50 p-4 border-2 border-red-200 rounded-lg">
+                    <div className="space-y-4">
                       {/* Case Overview Skeleton */}
                       <div className="mb-3">
                         <div className="skeleton h-4 w-24 rounded mb-2"></div>
