@@ -98,17 +98,14 @@ export default function SupportPage() {
           [conversationId]: [...(prev[conversationId] || []), section]
         }));
         
-        // If all sections are loaded, finish the process
+        // If all sections are loaded, finish the loading process
         if (index === sections.length - 1) {
           setTimeout(() => {
             setIsLoadingAnalysis(prev => ({
               ...prev,
               [conversationId]: false
             }));
-            setShowAIAnalysis(prev => ({
-              ...prev,
-              [conversationId]: true
-            }));
+            // Don't set showAIAnalysis - content is already loaded progressively
           }, 300);
         }
       }, (index + 1) * 500); // 500ms intervals
@@ -699,13 +696,14 @@ Kartik Kapgate`,
 
                 const isAnalysisShown = showAIAnalysis[conversation.id];
                 const isLoading = isLoadingAnalysis[conversation.id];
+                const loaded = loadedSections[conversation.id] || [];
+                const hasProgressiveContent = loaded.length > 0;
                 
                 // Auto-show analysis for Kartik's baggage policy email
                 const shouldShowAnalysis = isAnalysisShown || conversation.id === 'baggage-policy';
 
-                // Show progressive loading if AI is processing
-                if (isLoading) {
-                  const loaded = loadedSections[conversation.id] || [];
+                // Show progressive loading if AI is processing OR if we have progressive content (but only for Maria's email)
+                if ((isLoading || hasProgressiveContent) && conversation.id === 'flight-change-request') {
                   
                   return (
                     <div className="space-y-4">
