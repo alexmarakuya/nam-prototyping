@@ -604,6 +604,9 @@ Kartik Kapgate`,
 
                 const isAnalysisShown = showAIAnalysis[conversation.id];
                 const isLoading = isLoadingAnalysis[conversation.id];
+                
+                // Auto-show analysis for Kartik's baggage policy email
+                const shouldShowAnalysis = isAnalysisShown || conversation.id === 'baggage-policy';
 
                 // Show loading animation if AI is processing
                 if (isLoading) {
@@ -621,7 +624,7 @@ Kartik Kapgate`,
                 }
 
                 // Show trigger button if analysis hasn't been requested yet
-                if (!isAnalysisShown) {
+                if (!shouldShowAnalysis) {
                   return (
                     <div className="flex flex-col items-center text-center py-1">
                       <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
