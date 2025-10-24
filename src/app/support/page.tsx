@@ -9,6 +9,7 @@ export default function SupportPage() {
   const [showAIAnalysis, setShowAIAnalysis] = useState<Record<string, boolean>>({});
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState<Record<string, boolean>>({});
   const [copiedResponse, setCopiedResponse] = useState<Record<string, boolean>>({});
+  const [isFadingOut, setIsFadingOut] = useState<Record<string, boolean>>({});
   const [conversations, setConversations] = useState([
     {
       id: 'baggage-policy',
@@ -684,17 +685,63 @@ Kartik Kapgate`,
                 // Auto-show analysis for Kartik's baggage policy email
                 const shouldShowAnalysis = isAnalysisShown || conversation.id === 'baggage-policy';
 
-                // Show loading animation if AI is processing
+                // Show skeleton loader if AI is processing
                 if (isLoading) {
                   return (
-                    <div className="flex flex-col items-center text-center py-4">
-                      <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                        <div className="w-8 h-8 border-3 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="space-y-4">
+                      {/* Case Overview Skeleton */}
+                      <div className="mb-3">
+                        <div className="skeleton h-4 w-24 rounded mb-2"></div>
+                        <div className="flex gap-1 mb-2">
+                          <div className="skeleton h-6 w-20 rounded"></div>
+                          <div className="skeleton h-6 w-24 rounded"></div>
+                        </div>
                       </div>
-                      <h3 className="text-sm font-semibold text-gray-900 mb-2">Analyzing with AI...</h3>
-                      <p className="text-xs text-gray-600 max-w-xs">
-                        Processing case details and generating insights
-                      </p>
+
+                      {/* Case Summary Skeleton */}
+                      <div className="mb-3">
+                        <div className="skeleton h-3 w-20 rounded mb-1"></div>
+                        <div className="space-y-1">
+                          <div className="skeleton h-3 w-full rounded"></div>
+                          <div className="skeleton h-3 w-4/5 rounded"></div>
+                          <div className="skeleton h-3 w-3/4 rounded"></div>
+                        </div>
+                      </div>
+
+                      {/* Analysis Content Skeleton */}
+                      <div className="mb-3">
+                        <div className="skeleton h-3 w-32 rounded mb-2"></div>
+                        <div className="bg-gray-50 border border-gray-200 rounded p-2 mb-2">
+                          <div className="skeleton h-3 w-16 rounded mb-1"></div>
+                          <div className="skeleton h-3 w-24 rounded"></div>
+                        </div>
+                        <div className="bg-gray-50 border border-gray-200 rounded p-2">
+                          <div className="skeleton h-3 w-28 rounded mb-1"></div>
+                          <div className="space-y-1">
+                            <div className="skeleton h-2 w-full rounded"></div>
+                            <div className="skeleton h-2 w-5/6 rounded"></div>
+                            <div className="skeleton h-2 w-4/5 rounded"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Smart Response Skeleton */}
+                      <div className="bg-white rounded-lg border border-gray-200">
+                        <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200">
+                          <div className="skeleton h-3 w-28 rounded"></div>
+                          <div className="flex gap-1">
+                            <div className="skeleton h-4 w-4 rounded"></div>
+                            <div className="skeleton h-4 w-4 rounded"></div>
+                          </div>
+                        </div>
+                        <div className="px-3 py-3 space-y-2">
+                          <div className="skeleton h-3 w-16 rounded"></div>
+                          <div className="skeleton h-3 w-full rounded"></div>
+                          <div className="skeleton h-3 w-4/5 rounded"></div>
+                          <div className="skeleton h-3 w-3/4 rounded"></div>
+                          <div className="skeleton h-3 w-5/6 rounded"></div>
+                        </div>
+                      </div>
                     </div>
                   );
                 }
