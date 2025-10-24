@@ -664,7 +664,7 @@ Kartik Kapgate`,
                                 </ul>
                               </div>
 
-                              <p className="mt-2">I recommend the September 29th option as it's the most cost-effective. Would you like me to proceed with this change?</p>
+                              <p className="mt-2">I recommend the September 29th option as it&apos;s the most cost-effective. Would you like me to proceed with this change?</p>
                               
                               <p className="mt-2">I can process this immediately to secure your new seat.</p>
                               

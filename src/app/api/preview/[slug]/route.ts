@@ -3,9 +3,9 @@ import puppeteer from 'puppeteer';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = params;
+  const { slug } = await params;
   
   // Valid prototype slugs
   const validSlugs = ['travel-toolbox-feedback', 'ai-studios', 'support'];
@@ -55,7 +55,7 @@ export async function GET(
     });
 
     // Wait a bit more for any animations or dynamic content
-    await page.waitForTimeout(2000);
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Take screenshot
     const screenshot = await page.screenshot({
@@ -70,7 +70,7 @@ export async function GET(
 
     await browser.close();
 
-    return new NextResponse(screenshot, {
+    return new NextResponse(Buffer.from(screenshot), {
       headers: {
         'Content-Type': 'image/png',
         'Cache-Control': 'public, max-age=3600', // Cache for 1 hour

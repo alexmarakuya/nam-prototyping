@@ -117,9 +117,6 @@ export default function HomePage() {
     }
   };
 
-  const handleBackToClients = () => {
-    setSelectedClient(null);
-  };
 
   // Fetch last updated times for each project
   const fetchLastUpdatedTimes = async () => {
@@ -133,7 +130,7 @@ export default function HomePage() {
         });
         setLastUpdatedTimes(times);
       }
-    } catch (error) {
+    } catch {
       console.log('Could not fetch last updated times, using JSON defaults');
       // Use the timestamps from the JSON file as fallback
       const times: Record<string, Date> = {};
@@ -308,7 +305,7 @@ export default function HomePage() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No Clients Yet</h3>
             <p className="text-gray-600 max-w-md mx-auto">
-              We're currently setting up new client projects. Check back soon to see the latest prototypes and developments.
+              We&apos;re currently setting up new client projects. Check back soon to see the latest prototypes and developments.
             </p>
           </div>
         )}
