@@ -689,7 +689,7 @@ Kartik Kapgate`,
                   return (
                     <div className="space-y-4">
                       {/* Case Overview Skeleton */}
-                      <div className="mb-3">
+                      <div className="mb-3 skeleton-reveal-1">
                         <div className="skeleton h-4 w-24 rounded mb-2"></div>
                         <div className="flex gap-1 mb-2">
                           <div className="skeleton h-6 w-20 rounded"></div>
@@ -698,7 +698,7 @@ Kartik Kapgate`,
                       </div>
 
                       {/* Case Summary Skeleton */}
-                      <div className="mb-3">
+                      <div className="mb-3 skeleton-reveal-2">
                         <div className="skeleton h-3 w-20 rounded mb-1"></div>
                         <div className="space-y-1">
                           <div className="skeleton h-3 w-full rounded"></div>
@@ -708,7 +708,7 @@ Kartik Kapgate`,
                       </div>
 
                       {/* Analysis Content Skeleton */}
-                      <div className="mb-3">
+                      <div className="mb-3 skeleton-reveal-3">
                         <div className="skeleton h-3 w-32 rounded mb-2"></div>
                         <div className="bg-gray-50 border border-gray-200 rounded p-2 mb-2">
                           <div className="skeleton h-3 w-16 rounded mb-1"></div>
@@ -725,7 +725,7 @@ Kartik Kapgate`,
                       </div>
 
                       {/* Smart Response Skeleton */}
-                      <div className="bg-white rounded-lg border border-gray-200">
+                      <div className="bg-white rounded-lg border border-gray-200 skeleton-reveal-4">
                         <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200">
                           <div className="skeleton h-3 w-28 rounded"></div>
                           <div className="flex gap-1">
