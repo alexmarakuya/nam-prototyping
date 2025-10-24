@@ -3,9 +3,136 @@
 import { useState } from 'react';
 
 export default function SupportPage() {
-  // const [selectedConversation, setSelectedConversation] = useState('test-ticket');
+  const [selectedConversation, setSelectedConversation] = useState('baggage-policy');
   const [showNotification, setShowNotification] = useState(true);
   const [showExpandedResponse, setShowExpandedResponse] = useState(false);
+  const [conversations, setConversations] = useState([
+    {
+      id: 'baggage-policy',
+      customer: 'Kartik Kapgate',
+      subject: 'Baggage policy for Iberia flight',
+      time: 'Aug 18, 3:58 PM',
+      pnr: 'C7Q3SR',
+      status: 'active',
+      priority: 'medium',
+      isNew: false
+    },
+    {
+      id: 'test-ticket',
+      customer: 'Sumanth Na...',
+      subject: 'Re: test ticket',
+      time: 'Aug 8, 10:43 AM',
+      pnr: null,
+      status: 'draft',
+      priority: 'low',
+      isNew: false
+    },
+    {
+      id: 'general-inquiry',
+      customer: 'Sergey Kolo...',
+      subject: 'Hey there?',
+      time: 'Aug 5, 11:44 AM',
+      pnr: null,
+      status: 'pending',
+      priority: 'low',
+      isNew: false
+    },
+    {
+      id: 'welcome-draft',
+      customer: 'Sena Örücü',
+      subject: 'hello',
+      time: 'Jul 30, 9:31 AM',
+      pnr: null,
+      status: 'draft',
+      priority: 'low',
+      isNew: false
+    }
+  ]);
+
+  const handleNotificationClose = () => {
+    setShowNotification(false);
+    
+    // Add new flight change inquiry email after a short delay
+    setTimeout(() => {
+      const newConversation = {
+        id: 'flight-change-request',
+        customer: 'Maria Rodriguez',
+        subject: 'Flight change request - AA1234',
+        time: 'Just now',
+        pnr: 'B8X9KL',
+        status: 'active',
+        priority: 'high',
+        isNew: true
+      };
+      
+      setConversations(prev => [newConversation, ...prev]);
+      setSelectedConversation('flight-change-request');
+    }, 1000);
+  };
+
+  const getCurrentConversation = () => {
+    return conversations.find(c => c.id === selectedConversation);
+  };
+
+  const renderConversationContent = () => {
+    const conversation = getCurrentConversation();
+    if (!conversation) return null;
+
+    if (conversation.id === 'flight-change-request') {
+      return {
+        title: 'Flight Change Request - American Airlines',
+        customer: 'Maria Rodriguez',
+        customerInitial: 'M',
+        ticketId: 'ACA-5',
+        message: {
+          content: `Hello,
+
+I need to change my flight AA1234 from New York to Los Angeles scheduled for tomorrow (September 26th) to a later date due to a family emergency. 
+
+My current booking details:
+- Flight: AA1234 (JFK → LAX)
+- Date: September 26, 2024
+- Time: 2:30 PM EST
+- Seat: 14A (Economy)
+- PNR: B8X9KL
+
+I would prefer to travel on September 28th or 29th if possible. Could you please let me know:
+1. What are the change fees for my ticket type?
+2. What alternative flights are available on those dates?
+3. Any fare difference I need to pay?
+
+This is urgent as I need to make arrangements soon.
+
+Thank you for your assistance.
+
+Best regards,
+Maria Rodriguez`,
+          signature: `—
+Maria Rodriguez
+maria.rodriguez@email.com`,
+          time: 'Today, 4:22 PM'
+        }
+      };
+    }
+
+    // Default baggage policy conversation
+    return {
+      title: 'Baggage Policy Inquiry - Iberia Flight',
+      customer: 'Kartik Kapgate',
+      customerInitial: 'K',
+      ticketId: 'ACA-4',
+      message: {
+        content: `Hi there,
+
+I have a booking with Iberia (PNR: C7Q3SR) and I need to understand the baggage policy for my upcoming flight. Could you please provide details about carry-on and checked baggage allowances?
+
+Thanks for your help!`,
+        signature: `—
+Kartik Kapgate`,
+        time: 'Aug 18, 2:15 PM'
+      }
+    };
+  };
 
   return (
     <div className="h-screen flex relative" style={{ backgroundColor: '#ECEAF1' }}>
@@ -179,176 +306,178 @@ export default function SupportPage() {
             {/* Conversations List */}
             <div className="flex-1 overflow-y-auto p-2">
               <div className="space-y-1">
-                {/* Active Conversation */}
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-pointer">
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium text-gray-900 truncate">Kartik Kapgate</span>
-                        <span className="text-xs text-gray-500">Aug 18, 3:58 PM</span>
+                {conversations.map((conversation) => {
+                  const isSelected = selectedConversation === conversation.id;
+                  const getStatusColor = (status: string, priority: string) => {
+                    if (priority === 'high') return 'bg-red-500';
+                    if (status === 'active') return 'bg-purple-500';
+                    if (status === 'draft') return 'bg-blue-500';
+                    if (status === 'pending') return 'bg-purple-500';
+                    return 'bg-gray-400';
+                  };
+                  
+                  return (
+                    <div 
+                      key={conversation.id}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        isSelected 
+                          ? 'bg-blue-50 border border-blue-200' 
+                          : 'hover:bg-gray-50 border border-gray-200'
+                      } ${conversation.isNew ? 'ring-2 ring-green-200 animate-pulse' : ''}`}
+                      onClick={() => setSelectedConversation(conversation.id)}
+                    >
+                      <div className="flex items-start gap-2">
+                        <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${getStatusColor(conversation.status, conversation.priority)}`}></div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`text-sm font-medium truncate ${conversation.isNew ? 'text-green-800' : 'text-gray-900'}`}>
+                              {conversation.customer}
+                              {conversation.isNew && <span className="ml-1 text-xs text-green-600">(New)</span>}
+                            </span>
+                            <span className="text-xs text-gray-500">{conversation.time}</span>
+                          </div>
+                          <div className="text-sm text-gray-600 mb-1">{conversation.subject}</div>
+                          {conversation.pnr && (
+                            <div className="text-xs text-blue-600">PNR: {conversation.pnr}</div>
+                          )}
+                          {conversation.status === 'draft' && !conversation.pnr && (
+                            <div className="text-xs text-blue-600">Shared draft hello</div>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-600 mb-1">Baggage policy for Iberia flight</div>
-                      <div className="text-xs text-blue-600">PNR: C7Q3SR</div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Other Conversations */}
-                <div className="p-3 hover:bg-gray-50 rounded-lg cursor-pointer border border-gray-200">
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium text-gray-900 truncate">Sumanth Na...</span>
-                        <span className="text-xs text-gray-500">Aug 8, 10:43 AM</span>
-                      </div>
-                      <div className="text-sm text-gray-600 mb-1">Re: test ticket</div>
-                      <div className="text-xs text-blue-600">Shared draft hello</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium text-gray-900 truncate">Sergey Kolo...</span>
-                        <span className="text-xs text-gray-500">Aug 5, 11:44 AM</span>
-                      </div>
-                      <div className="text-sm text-gray-600 mb-1">Hey there?</div>
-                      <div className="text-xs text-gray-500">What&apos;s up?</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium text-gray-900 truncate">Sena Örücü</span>
-                        <span className="text-xs text-gray-500">Jul 30, 9:31 AM</span>
-                      </div>
-                      <div className="text-sm text-gray-600 mb-1">hello</div>
-                      <div className="text-xs text-blue-600">Draft welcome to the front</div>
-                    </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
           </div>
 
-          {/* Column 2: Test Ticket Content */}
+          {/* Column 2: Dynamic Ticket Content */}
           <div className="flex-1 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
-            {/* Header */}
-            <div className="h-14 flex items-center justify-between px-6" style={{ backgroundColor: '#FCFBFE' }}>
-              <div className="flex items-center gap-4">
-                <h1 className="text-lg font-medium text-gray-900">Baggage Policy Inquiry - Iberia Flight</h1>
-              </div>
-              <div className="flex items-center gap-3">
-                <button className="p-2 hover:bg-gray-100 rounded-lg">
-                  <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                  </svg>
-                </button>
-                <button className="p-2 hover:bg-gray-100 rounded-lg">
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-                <div className="flex items-center gap-2 rounded-lg px-3 py-1 border border-gray-300">
-                  <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center text-white text-xs font-medium">K</div>
-                  <span className="text-sm font-medium text-gray-900">Kartik K.</span>
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div className="flex items-center gap-2 rounded-lg px-3 py-1.5 border border-gray-300">
-                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <circle cx="12" cy="12" r="10" strokeDasharray="4 4" />
-                  </svg>
-                  <span className="text-sm font-medium text-gray-900">Open</span>
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Ticket Header */}
-            <div className="border-b border-gray-200 px-6 py-3">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4m16 0l-2-2m-14 2l2-2" />
-                  </svg>
-                  <span className="text-base font-medium text-gray-900">Support</span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <span className="text-base font-medium text-gray-900">ACA-4</span>
-                </div>
-
-                <button className="flex items-center gap-2 p-1 hover:bg-gray-100 rounded">
-                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </button>
-
-                <div className="w-px h-6 bg-gray-300"></div>
-
-                <button className="p-1 hover:bg-gray-100 rounded">
-                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {/* Message Card 1 - Customer Inquiry */}
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-                {/* Message Content */}
-                <div className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-medium flex-shrink-0">K</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="font-medium text-gray-900">Kartik Kapgate</span>
-                        <span className="text-sm text-gray-500">To: support@acai.travel</span>
-                        <span className="text-xs text-gray-400 ml-auto">Aug 18, 2:15 PM</span>
-                        <button className="p-1 hover:bg-gray-100 rounded">
-                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                          </svg>
-                        </button>
-                        <button className="p-1 hover:bg-gray-100 rounded">
-                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                          </svg>
-                        </button>
+            {(() => {
+              const contentData = renderConversationContent();
+              if (!contentData) return null;
+              
+              return (
+                <>
+                  {/* Header */}
+                  <div className="h-14 flex items-center justify-between px-6" style={{ backgroundColor: '#FCFBFE' }}>
+                    <div className="flex items-center gap-4">
+                      <h1 className="text-lg font-medium text-gray-900">{contentData.title}</h1>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button className="p-2 hover:bg-gray-100 rounded-lg">
+                        <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                        </svg>
+                      </button>
+                      <button className="p-2 hover:bg-gray-100 rounded-lg">
+                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </button>
+                      <div className="flex items-center gap-2 rounded-lg px-3 py-1 border border-gray-300">
+                        <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center text-white text-xs font-medium">{contentData.customerInitial}</div>
+                        <span className="text-sm font-medium text-gray-900">{contentData.customer.split(' ')[0]} {contentData.customer.split(' ')[1]?.[0]}.</span>
+                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                       </div>
-                      <div className="text-gray-900 mb-4">
-                        <p className="mb-2">Hi there,</p>
-                        <p className="mb-2">I have a booking with Iberia (PNR: C7Q3SR) and I need to understand the baggage policy for my upcoming flight. Could you please provide details about carry-on and checked baggage allowances?</p>
-                        <p>Thanks for your help!</p>
-                      </div>
-                      <div className="border-t border-gray-200 pt-3">
-                        <div className="text-sm text-gray-900 font-medium">—</div>
-                        <div className="text-sm text-gray-900 font-medium">Kartik Kapgate</div>
-                        <div className="text-sm text-gray-500 mt-2">Sent from <span className="font-medium text-gray-900">Gmail</span></div>
+                      <div className="flex items-center gap-2 rounded-lg px-3 py-1.5 border border-gray-300">
+                        <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                          <circle cx="12" cy="12" r="10" strokeDasharray="4 4" />
+                        </svg>
+                        <span className="text-sm font-medium text-gray-900">Open</span>
+                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
+                  {/* Ticket Header */}
+                  <div className="border-b border-gray-200 px-6 py-3">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4m16 0l-2-2m-14 2l2-2" />
+                        </svg>
+                        <span className="text-base font-medium text-gray-900">Support</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span className="text-base font-medium text-gray-900">{contentData.ticketId}</span>
+                      </div>
+
+                      <button className="flex items-center gap-2 p-1 hover:bg-gray-100 rounded">
+                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </button>
+
+                      <div className="w-px h-6 bg-gray-300"></div>
+
+                      <button className="p-1 hover:bg-gray-100 rounded">
+                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {(() => {
+                const contentData = renderConversationContent();
+                if (!contentData) return null;
+                
+                return (
+                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+                    {/* Message Content */}
+                    <div className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-medium flex-shrink-0">{contentData.customerInitial}</div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-medium text-gray-900">{contentData.customer}</span>
+                            <span className="text-sm text-gray-500">To: support@acai.travel</span>
+                            <span className="text-xs text-gray-400 ml-auto">{contentData.message.time}</span>
+                            <button className="p-1 hover:bg-gray-100 rounded">
+                              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                              </svg>
+                            </button>
+                            <button className="p-1 hover:bg-gray-100 rounded">
+                              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                              </svg>
+                            </button>
+                          </div>
+                          <div className="text-gray-900 mb-4">
+                            {contentData.message.content.split('\n').map((line, index) => (
+                              <p key={index} className={line.trim() ? "mb-2" : "mb-1"}>
+                                {line || '\u00A0'}
+                              </p>
+                            ))}
+                          </div>
+                          <div className="border-t border-gray-200 pt-3">
+                            {contentData.message.signature.split('\n').map((line, index) => (
+                              <div key={index} className="text-sm text-gray-900 font-medium">{line}</div>
+                            ))}
+                            <div className="text-sm text-gray-500 mt-2">Sent from <span className="font-medium text-gray-900">Gmail</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Open in Support Status Bar */}
@@ -435,125 +564,249 @@ export default function SupportPage() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-3">
-              {/* Case Overview Header */}
-              <div className="mb-3">
-                <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
-                <div className="flex gap-1 mb-2">
-                  <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PNR C7Q3SR</span>
-                  <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PCC YTOGO3100</span>
-                </div>
-              </div>
+              {(() => {
+                const conversation = getCurrentConversation();
+                if (!conversation) return null;
 
-              {/* Case Summary */}
-              <div className="mb-3">
-                <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
-                <p className="text-xs text-gray-700 leading-relaxed">
-                  Kartik Kapgate requested information about the baggage policy for their booking with Iberia. The analysis provided details on carry-on and checked baggage allowances for Economy Class (S and L). No ATC was used for this analysis.
-                </p>
-              </div>
+                if (conversation.id === 'flight-change-request') {
+                  return (
+                    <>
+                      {/* Case Overview Header */}
+                      <div className="mb-3">
+                        <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
+                        <div className="flex gap-1 mb-2">
+                          <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PNR B8X9KL</span>
+                          <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">Flight AA1234</span>
+                        </div>
+                      </div>
 
-              {/* Need More Help */}
-              <div className="mb-3">
-                <h3 className="text-xs font-semibold text-gray-900 mb-1">Need more help to close the case?</h3>
-                <div className="flex items-center gap-1">
-                  <a href="#" className="text-purple-600 text-xs underline hover:text-purple-800">
-                    Get answers on penalties, airline policies, and GDS.
-                  </a>
-                  <svg className="w-3 h-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </div>
-              </div>
+                      {/* Case Summary */}
+                      <div className="mb-3">
+                        <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
+                        <p className="text-xs text-gray-700 leading-relaxed">
+                          Maria Rodriguez requests flight change from AA1234 (JFK→LAX) on Sept 26 to Sept 28/29 due to family emergency. Economy ticket requires change fee analysis and alternative flight options.
+                        </p>
+                      </div>
 
-              {/* Smart Response Draft */}
-              <div className="bg-white rounded-lg border border-gray-200">
-                {/* Header */}
-                <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
-                  <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
-                  <div className="flex items-center gap-1">
-                    <div className="relative group">
-                      <button className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                        </svg>
-                      </button>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                        Copy
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                      {/* Flight Change Analysis */}
+                      <div className="mb-3">
+                        <h3 className="text-xs font-semibold text-gray-900 mb-1">Change Penalties & Options:</h3>
+                        <div className="bg-red-50 border border-red-200 rounded p-2 mb-2">
+                          <h4 className="text-xs font-semibold text-red-800 mb-1">Change Fee</h4>
+                          <p className="text-xs text-red-700">$200 USD + fare difference</p>
+                        </div>
+                        
+                        <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                          <h4 className="text-xs font-semibold text-blue-800 mb-1">Available Alternatives</h4>
+                          <div className="space-y-1 text-xs text-blue-700">
+                            <div>• Sept 28: AA1236 (JFK→LAX) 1:15 PM - $50 fare diff</div>
+                            <div>• Sept 28: AA1240 (JFK→LAX) 6:30 PM - $25 fare diff</div>
+                            <div>• Sept 29: AA1234 (JFK→LAX) 2:30 PM - No fare diff</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Smart Response Draft */}
+                      <div className="bg-white rounded-lg border border-gray-200">
+                        {/* Header */}
+                        <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
+                          <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
+                          <div className="flex items-center gap-1">
+                            <div className="relative group">
+                              <button className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110">
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                </svg>
+                              </button>
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                Copy
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                              </div>
+                            </div>
+                            <div className="relative group">
+                              <button 
+                                onClick={() => setShowExpandedResponse(!showExpandedResponse)}
+                                className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110"
+                              >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                  {showExpandedResponse ? (
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                                  ) : (
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                  )}
+                                </svg>
+                              </button>
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                {showExpandedResponse ? 'Collapse' : 'Expand'}
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="px-3 py-3">
+                          <div className={`relative ${!showExpandedResponse ? 'max-h-20 overflow-hidden' : ''}`}>
+                            <div className="space-y-2 text-xs text-gray-700">
+                              <p>Hi Maria,</p>
+                              <p>I understand you need to change your flight due to a family emergency. I can help you with that.</p>
+                              
+                              <div className="mt-2">
+                                <h4 className="font-semibold text-gray-900 mb-1">Change Fee & Options</h4>
+                                <p className="text-xs text-gray-700 mb-1">Your Economy ticket has a change fee of <strong>$200 USD</strong> plus any fare difference.</p>
+                                
+                                <p className="text-xs text-gray-700 mb-1">Here are your best options:</p>
+                                <ul className="space-y-1 text-xs text-gray-700 ml-2">
+                                  <li>• <strong>Sept 29, AA1234 at 2:30 PM</strong> - Same flight, no fare difference (Total: $200)</li>
+                                  <li>• Sept 28, AA1240 at 6:30 PM - $25 fare difference (Total: $225)</li>
+                                  <li>• Sept 28, AA1236 at 1:15 PM - $50 fare difference (Total: $250)</li>
+                                </ul>
+                              </div>
+
+                              <p className="mt-2">I recommend the September 29th option as it's the most cost-effective. Would you like me to proceed with this change?</p>
+                              
+                              <p className="mt-2">I can process this immediately to secure your new seat.</p>
+                              
+                              <p className="mt-2">Best regards,</p>
+                              <p>Acai Travel Support Team</p>
+                            </div>
+                            
+                            {!showExpandedResponse && (
+                              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                }
+
+                // Default baggage policy content
+                return (
+                  <>
+                    {/* Case Overview Header */}
+                    <div className="mb-3">
+                      <h2 className="text-sm font-semibold text-gray-900 mb-2">Case Overview</h2>
+                      <div className="flex gap-1 mb-2">
+                        <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PNR C7Q3SR</span>
+                        <span className="px-2 py-1 bg-white text-gray-700 text-xs font-medium rounded border border-gray-200">PCC YTOGO3100</span>
                       </div>
                     </div>
-                    <div className="relative group">
-                      <button 
-                        onClick={() => setShowExpandedResponse(!showExpandedResponse)}
-                        className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110"
-                      >
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                          {showExpandedResponse ? (
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-                          ) : (
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                          )}
-                        </svg>
-                      </button>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                        {showExpandedResponse ? 'Collapse' : 'Expand'}
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Content */}
-                <div className="px-3 py-3">
-                  <div className={`relative ${!showExpandedResponse ? 'max-h-20 overflow-hidden' : ''}`}>
-                    <div className="space-y-2 text-xs text-gray-700">
-                      <p>Hi Kartik,</p>
-                      <p>Thanks for contacting Acai Travel.</p>
-                      <p>Here is the baggage policy for your booking (PNR: C7Q3SR) with Iberia:</p>
-
-                      <div className="mt-2">
-                        <h4 className="font-semibold text-gray-900 mb-1">Carry-On Baggage</h4>
-                        <ul className="space-y-1 text-xs text-gray-700 ml-2">
-                          <li>• Economy / Premium Economy: 1 cabin bag (max size 56x40x25 cm, max weight 10 kg) and 1 personal accessory (max size 30x40x15 cm).</li>
-                          <li>• Business Class (Short/Medium Haul): 1 cabin bag (max size 56x40x25 cm, max weight 14 kg) and 1 personal accessory.</li>
-                          <li>• Business Plus (Long Haul): 2 cabin bags (each max size 56x40x25 cm, max weight 14 kg) and 1 personal accessory.</li>
-                        </ul>
-                      </div>
-
-                      <div className="mt-2">
-                        <h4 className="font-semibold text-gray-900 mb-1">Checked Baggage</h4>
-                        <p className="text-xs text-gray-700">Economy Class: Typically 1 piece (max weight 23 kg, max dimensions 158 cm total).</p>
-                        <p className="text-xs text-gray-700">Business Class: 2 or more pieces (max weight 23 kg each).</p>
-                      </div>
-
-                      <div className="mt-2">
-                        <h4 className="font-semibold text-gray-900 mb-1">Special Items</h4>
-                        <ul className="space-y-1 text-xs text-gray-700 ml-2">
-                          <li>• Sports Equipment: Must be pre-booked and paid for.</li>
-                          <li>• Musical Instruments: Included in the baggage allowance for Iberia Plus members.</li>
-                          <li>• Pets: Not allowed in the cabin or hold on flights to/from London but can be transported as cargo.</li>
-                        </ul>
-                      </div>
-
-                      <p className="mt-2">
-                        For more details, you can visit Iberia&apos;s official baggage pages: 
-                        <a href="#" className="text-purple-600 underline hover:text-purple-800 ml-1">Carry-on Baggage</a> and 
-                        <a href="#" className="text-purple-600 underline hover:text-purple-800 ml-1">Checked Baggage</a>.
+                    {/* Case Summary */}
+                    <div className="mb-3">
+                      <h3 className="text-xs font-semibold text-gray-900 mb-1">Case Summary:</h3>
+                      <p className="text-xs text-gray-700 leading-relaxed">
+                        Kartik Kapgate requested information about the baggage policy for their booking with Iberia. The analysis provided details on carry-on and checked baggage allowances for Economy Class (S and L). No ATC was used for this analysis.
                       </p>
-
-                      <p className="mt-2">Let me know if you have any further questions or need assistance.</p>
-                      
-                      <p className="mt-2">Thanks,</p>
-                      <p>Acai Travel Virtual Agent</p>
                     </div>
-                    
-                    {!showExpandedResponse && (
-                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
-                    )}
-                  </div>
-                </div>
-              </div>
+
+                    {/* Need More Help */}
+                    <div className="mb-3">
+                      <h3 className="text-xs font-semibold text-gray-900 mb-1">Need more help to close the case?</h3>
+                      <div className="flex items-center gap-1">
+                        <a href="#" className="text-purple-600 text-xs underline hover:text-purple-800">
+                          Get answers on penalties, airline policies, and GDS.
+                        </a>
+                        <svg className="w-3 h-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Smart Response Draft */}
+                    <div className="bg-white rounded-lg border border-gray-200">
+                      {/* Header */}
+                      <div className="flex items-center justify-between px-3 py-1 border-b border-gray-200 bg-white rounded-t-lg">
+                        <h3 className="text-xs font-medium text-gray-900">Smart Response Draft</h3>
+                        <div className="flex items-center gap-1">
+                          <div className="relative group">
+                            <button className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                              </svg>
+                            </button>
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                              Copy
+                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                            </div>
+                          </div>
+                          <div className="relative group">
+                            <button 
+                              onClick={() => setShowExpandedResponse(!showExpandedResponse)}
+                              className="p-0.5 text-gray-600 hover:text-gray-800 rounded transition-all duration-200 hover:bg-gray-100 hover:scale-110"
+                            >
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                {showExpandedResponse ? (
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                                ) : (
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                )}
+                              </svg>
+                            </button>
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                              {showExpandedResponse ? 'Collapse' : 'Expand'}
+                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="px-3 py-3">
+                        <div className={`relative ${!showExpandedResponse ? 'max-h-20 overflow-hidden' : ''}`}>
+                          <div className="space-y-2 text-xs text-gray-700">
+                            <p>Hi Kartik,</p>
+                            <p>Thanks for contacting Acai Travel.</p>
+                            <p>Here is the baggage policy for your booking (PNR: C7Q3SR) with Iberia:</p>
+
+                            <div className="mt-2">
+                              <h4 className="font-semibold text-gray-900 mb-1">Carry-On Baggage</h4>
+                              <ul className="space-y-1 text-xs text-gray-700 ml-2">
+                                <li>• Economy / Premium Economy: 1 cabin bag (max size 56x40x25 cm, max weight 10 kg) and 1 personal accessory (max size 30x40x15 cm).</li>
+                                <li>• Business Class (Short/Medium Haul): 1 cabin bag (max size 56x40x25 cm, max weight 14 kg) and 1 personal accessory.</li>
+                                <li>• Business Plus (Long Haul): 2 cabin bags (each max size 56x40x25 cm, max weight 14 kg) and 1 personal accessory.</li>
+                              </ul>
+                            </div>
+
+                            <div className="mt-2">
+                              <h4 className="font-semibold text-gray-900 mb-1">Checked Baggage</h4>
+                              <p className="text-xs text-gray-700">Economy Class: Typically 1 piece (max weight 23 kg, max dimensions 158 cm total).</p>
+                              <p className="text-xs text-gray-700">Business Class: 2 or more pieces (max weight 23 kg each).</p>
+                            </div>
+
+                            <div className="mt-2">
+                              <h4 className="font-semibold text-gray-900 mb-1">Special Items</h4>
+                              <ul className="space-y-1 text-xs text-gray-700 ml-2">
+                                <li>• Sports Equipment: Must be pre-booked and paid for.</li>
+                                <li>• Musical Instruments: Included in the baggage allowance for Iberia Plus members.</li>
+                                <li>• Pets: Not allowed in the cabin or hold on flights to/from London but can be transported as cargo.</li>
+                              </ul>
+                            </div>
+
+                            <p className="mt-2">
+                              For more details, you can visit Iberia&apos;s official baggage pages: 
+                              <a href="#" className="text-purple-600 underline hover:text-purple-800 ml-1">Carry-on Baggage</a> and 
+                              <a href="#" className="text-purple-600 underline hover:text-purple-800 ml-1">Checked Baggage</a>.
+                            </p>
+
+                            <p className="mt-2">Let me know if you have any further questions or need assistance.</p>
+                            
+                            <p className="mt-2">Thanks,</p>
+                            <p>Acai Travel Virtual Agent</p>
+                          </div>
+                          
+                          {!showExpandedResponse && (
+                            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -622,7 +875,7 @@ export default function SupportPage() {
       {showNotification && (
         <div className="fixed bottom-4 left-4 w-72 bg-indigo-600 rounded-lg shadow-lg text-white p-4 z-50">
           <button 
-            onClick={() => setShowNotification(false)}
+            onClick={handleNotificationClose}
             className="absolute top-2 right-2 text-white hover:text-gray-200"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
