@@ -108,7 +108,7 @@ export default function SupportPage() {
             // Don't set showAIAnalysis - content is already loaded progressively
           }, 300);
         }
-      }, (index + 1) * 500); // 500ms intervals
+      }, (index + 1) * 800); // 800ms intervals
     });
   };
 
