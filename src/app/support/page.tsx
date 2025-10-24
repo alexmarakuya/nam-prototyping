@@ -421,7 +421,7 @@ Kartik Kapgate`,
                         isSelected 
                           ? 'bg-blue-50 border border-blue-200' 
                           : 'hover:bg-gray-50 border border-gray-200'
-                      } ${conversation.isNew ? 'animate-slideIn' : ''}`}
+                      } ${conversation.isNew ? 'animate-pushIn' : ''}`}
                       onClick={() => {
                         setSelectedConversation(conversation.id);
                         // Mark as read when clicked
