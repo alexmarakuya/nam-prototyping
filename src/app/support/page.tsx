@@ -872,15 +872,10 @@ Kartik Kapgate`,
 
                     {/* Need More Help */}
                     <div className="mb-3">
-                      <h3 className="text-xs font-semibold text-gray-900 mb-1">Need more help to close the case?</h3>
-                      <div className="flex items-center gap-1">
-                        <a href="#" className="text-purple-600 text-xs underline hover:text-purple-800">
-                          Get answers on penalties, airline policies, and GDS.
-                        </a>
-                        <svg className="w-3 h-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </div>
+                      <h3 className="text-xs font-semibold text-gray-900 mb-2">Need more help to close the case?</h3>
+                      <button className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200">
+                        Ask Acai
+                      </button>
                     </div>
 
                     {/* Smart Response Draft */}
