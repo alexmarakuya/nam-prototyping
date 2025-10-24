@@ -402,7 +402,7 @@ Kartik Kapgate`,
 
             {/* Conversations List */}
             <div className="flex-1 overflow-y-auto p-2">
-              <div className="space-y-1 email-list">
+              <div className="space-y-1">
                 {conversations.map((conversation) => {
                   const isSelected = selectedConversation === conversation.id;
                   const getStatusColor = (status: string, priority: string, isNew: boolean) => {
@@ -421,7 +421,7 @@ Kartik Kapgate`,
                         isSelected 
                           ? 'bg-blue-50 border border-blue-200' 
                           : 'hover:bg-gray-50 border border-gray-200'
-                      } ${conversation.isNew ? 'animate-pushIn' : ''}`}
+                      } ${conversation.isNew ? 'animate-slideInSimple' : ''}`}
                       onClick={() => {
                         setSelectedConversation(conversation.id);
                         // Mark as read when clicked
