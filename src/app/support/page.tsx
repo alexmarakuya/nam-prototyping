@@ -592,7 +592,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 0 - Between Left Column and Middle Column */}
           <div
-            className="w-px bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-px bg-gray-200 hover:w-0.5 hover:bg-blue-500 cursor-col-resize flex-shrink-0 transition-all duration-200 lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 0)}
           />
 
@@ -812,7 +812,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 2 */}
           <div
-            className="w-px bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-px bg-gray-200 hover:w-0.5 hover:bg-blue-500 cursor-col-resize flex-shrink-0 transition-all duration-200 lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 1)}
           />
 
