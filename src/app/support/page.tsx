@@ -326,7 +326,7 @@ Kartik Kapgate`,
   return (
     <div className="h-screen flex relative" style={{ backgroundColor: '#ECEAF1' }}>
       {/* Left Sidebar */}
-      <div className="w-64 flex flex-col pt-6">
+      <div className="w-64 flex flex-col pt-6 flex-shrink-0">
         {/* Header */}
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
