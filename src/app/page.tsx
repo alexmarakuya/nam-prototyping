@@ -152,10 +152,10 @@ export default function HomePage() {
     const client = clients.find(c => c.prototypes.some(p => p.id === selectedEnvironment));
     const prototype = client?.prototypes.find(p => p.id === selectedEnvironment);
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-600 mx-auto mb-6"></div>
-          <p className="text-gray-600 text-lg">Loading {prototype?.name}</p>
+          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-slate-600 mx-auto mb-4 sm:mb-6"></div>
+          <p className="text-gray-600 text-base sm:text-lg truncate max-w-xs sm:max-w-none" title={prototype?.name}>Loading {prototype?.name}</p>
         </div>
       </div>
     );
@@ -165,16 +165,16 @@ export default function HomePage() {
   if (selectedClient) {
     const client = clients.find(c => c.id === selectedClient);
     return (
-      <div className="min-h-screen bg-gray-50 py-16 px-8">
+      <div className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-12">
-            <h1 className="text-2xl font-light text-gray-900 mb-4">
+          <div className="mb-8 sm:mb-10 lg:mb-12">
+            <h1 className="text-xl sm:text-2xl font-light text-gray-900 mb-2 sm:mb-4 truncate" title={client?.name}>
               {client?.name}
             </h1>
           </div>
 
           {client?.prototypes && client.prototypes.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {client.prototypes
                 .sort((a, b) => {
                   const timeA = lastUpdatedTimes[a.id]?.getTime() || 0;
@@ -203,12 +203,12 @@ export default function HomePage() {
                       Preview unavailable
                     </div>
                   </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="leading-tight flex-1">
-                      <h2 className="text-sm font-semibold text-gray-900">{prototype.name}</h2>
-                      <span className="text-sm font-normal text-gray-500">{prototype.description}</span>
+                  <div className="p-4 sm:p-5 flex flex-col flex-1">
+                    <div className="leading-tight flex-1 min-h-0">
+                      <h2 className="text-sm font-semibold text-gray-900 truncate mb-1" title={prototype.name}>{prototype.name}</h2>
+                      <span className="text-xs sm:text-sm font-normal text-gray-500 line-clamp-2">{prototype.description}</span>
                     </div>
-                    <div className="flex justify-between items-center mt-4">
+                    <div className="flex justify-between items-center mt-3 sm:mt-4">
                       <div className="text-xs text-gray-400">
                         {lastUpdatedTimes[prototype.id] 
                           ? getRelativeTime(lastUpdatedTimes[prototype.id])
@@ -217,7 +217,7 @@ export default function HomePage() {
                       </div>
                       <button
                         onClick={(e) => handleCopyUrl(e, prototype.id)}
-                        className={`flex items-center space-x-2 px-3 py-2 text-xs font-medium rounded-md transition-colors duration-200 ${
+                        className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1.5 sm:py-2 text-xs font-medium rounded-md transition-colors duration-200 ${
                           copiedId === prototype.id
                             ? 'text-green-700 bg-green-50 hover:bg-green-100'
                             : 'text-gray-600 bg-gray-50 hover:bg-gray-100'
@@ -233,7 +233,8 @@ export default function HomePage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                           </svg>
                         )}
-                        <span>{copiedId === prototype.id ? 'Copied!' : 'Share'}</span>
+                        <span className="hidden sm:inline">{copiedId === prototype.id ? 'Copied!' : 'Share'}</span>
+                        <span className="sm:hidden">{copiedId === prototype.id ? '✓' : '↗'}</span>
                       </button>
                     </div>
                   </div>
@@ -259,33 +260,33 @@ export default function HomePage() {
 
   // Show clients selection
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-8">
+    <div className="min-h-screen bg-gray-50 py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-2xl font-light text-gray-900 mb-4">
+        <div className="mb-8 sm:mb-10 lg:mb-12">
+          <h1 className="text-xl sm:text-2xl font-light text-gray-900 mb-2 sm:mb-4">
             NAM Prototypes
           </h1>
         </div>
 
         {clients.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {clients
               .sort((a, b) => b.prototypes.length - a.prototypes.length)
               .map((client) => (
               <div
                 key={client.id}
-                className="cursor-pointer p-4 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-200"
+                className="cursor-pointer p-3 sm:p-4 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-200"
                 onClick={() => handleClientSelect(client.id)}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <span className="text-sm font-medium text-gray-600">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-medium text-gray-600">
                       {client.name.charAt(0)}
                     </span>
                   </div>
-                  <div className="leading-tight">
-                    <h2 className="text-sm font-semibold text-gray-900">{client.name}</h2>
-                    <span className="text-sm font-normal text-gray-500">
+                  <div className="leading-tight min-w-0 flex-1">
+                    <h2 className="text-sm font-semibold text-gray-900 truncate" title={client.name}>{client.name}</h2>
+                    <span className="text-xs sm:text-sm font-normal text-gray-500 truncate block">
                       {client.prototypes.length > 0 
                         ? `${client.prototypes.length} project${client.prototypes.length !== 1 ? 's' : ''}`
                         : 'In development'
