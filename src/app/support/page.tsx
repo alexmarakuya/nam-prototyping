@@ -13,7 +13,7 @@ export default function SupportPage() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   
   // Resizable columns state
-  const [columnWidths, setColumnWidths] = useState<number[]>([320, 0, 320]); // [left, middle, right] in pixels
+  const [columnWidths, setColumnWidths] = useState<number[]>([320, 0, 320]); // [left: fixed, middle: dynamic, right: resizable] in pixels
   const [isResizing, setIsResizing] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -29,31 +29,19 @@ export default function SupportPage() {
     const containerRect = containerRef.current.getBoundingClientRect();
     const containerWidth = containerRect.width;
     const mouseX = e.clientX - containerRect.left;
-    const resizeHandleWidth = 2; // Total width of both resize handles
+    const resizeHandleWidth = 1; // Only one resize handle now (between middle and right)
     
     const newWidths = [...columnWidths];
     
-    if (isResizing === 0) {
-      // Resizing between left and middle column
-      const maxLeftWidth = containerWidth - columnWidths[2] - resizeHandleWidth - 300; // Leave room for middle and right
-      const leftWidth = Math.max(200, Math.min(maxLeftWidth, mouseX));
-      const rightWidth = columnWidths[2];
-      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
-      
-      if (middleWidth >= 300) { // Minimum middle width
-        newWidths[0] = leftWidth;
-        newWidths[1] = middleWidth;
-        newWidths[2] = rightWidth;
-      }
-    } else if (isResizing === 1) {
-      // Resizing between middle and right column
-      const leftWidth = columnWidths[0];
+    if (isResizing === 1) {
+      // Only resizing between middle and right column
+      const leftWidth = columnWidths[0]; // Fixed left column width
       const maxRightWidth = containerWidth - leftWidth - resizeHandleWidth - 300; // Leave room for middle
       const rightWidth = Math.max(200, Math.min(maxRightWidth, containerWidth - mouseX));
       const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       if (middleWidth >= 300) { // Minimum middle width
-        newWidths[0] = leftWidth;
+        newWidths[0] = leftWidth; // Keep left fixed
         newWidths[1] = middleWidth;
         newWidths[2] = rightWidth;
       }
@@ -86,9 +74,9 @@ export default function SupportPage() {
   useEffect(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-      const leftWidth = columnWidths[0];
+      const leftWidth = columnWidths[0]; // Fixed left column width
       const rightWidth = columnWidths[2];
-      const resizeHandleWidth = 2; // Total width of both resize handles
+      const resizeHandleWidth = 1; // Only one resize handle now
       const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       // Ensure middle column has minimum width
@@ -96,7 +84,7 @@ export default function SupportPage() {
         setColumnWidths([leftWidth, middleWidth, rightWidth]);
       }
     }
-  }, [columnWidths[0], columnWidths[2]]);
+  }, [columnWidths[2]]); // Only depend on right column changes
 
   const [conversations, setConversations] = useState([
     {
@@ -470,14 +458,14 @@ Kartik Kapgate`,
           className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden max-w-full" 
           style={{ backgroundColor: '#FCFBFE' }}
         >
-          {/* Column 1: Open/Conversations List */}
+          {/* Column 1: Open/Conversations List - Fixed Width */}
           <div 
             className={`border-r border-gray-100 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
             style={{ 
               backgroundColor: '#FCFBFE',
-              width: `${columnWidths[0]}px`,
-              minWidth: '200px',
-              maxWidth: '600px'
+              width: '320px',
+              minWidth: '320px',
+              maxWidth: '320px'
             }}
           >
             {/* Conversations Header */}
@@ -586,12 +574,6 @@ Kartik Kapgate`,
               </div>
             </div>
           </div>
-
-          {/* Resize Handle 1 */}
-          <div
-            className="w-px bg-gray-100 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
-            onMouseDown={(e) => handleMouseDown(e, 0)}
-          />
 
           {/* Column 2: Dynamic Ticket Content */}
           <div 
