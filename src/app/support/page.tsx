@@ -511,7 +511,7 @@ Kartik Kapgate`,
                   {/* Header */}
                   <div className="h-14 flex items-center justify-between px-6" style={{ backgroundColor: '#FCFBFE' }}>
                     <div className="flex items-center gap-4">
-                      <h1 className="text-lg font-medium text-gray-900">{contentData.title}</h1>
+                      <h1 className="text-lg font-medium text-gray-900 truncate max-w-md" title={contentData.title}>{contentData.title}</h1>
                     </div>
                     <div className="flex items-center gap-3">
                       <button className="p-2 hover:bg-gray-100 rounded-lg">
