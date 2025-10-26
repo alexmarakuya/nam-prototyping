@@ -914,6 +914,17 @@ Kartik Kapgate`,
                               </div>
                             </div>
                           )}
+
+                          {/* Need More Help */}
+                          <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mt-3">
+                            <h3 className="text-xs font-semibold text-purple-900 mb-2">Need more help to close the case?</h3>
+                            <button 
+                              onClick={() => window.open('/acai-redirect', '_blank')}
+                              className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
+                            >
+                              Ask Acai
+                            </button>
+                          </div>
                         </>
                       )}
                     </div>
