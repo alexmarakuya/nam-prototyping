@@ -36,7 +36,7 @@ export default function SupportPage() {
       // Resizing between left and middle column
       const leftWidth = Math.max(200, Math.min(600, mouseX));
       const rightWidth = columnWidths[2];
-      const middleWidth = containerWidth - leftWidth - rightWidth;
+      const middleWidth = containerWidth - leftWidth - rightWidth - 1; // Account for resize handle
       
       if (middleWidth >= 300) { // Minimum middle width
         newWidths[0] = leftWidth;
@@ -47,7 +47,7 @@ export default function SupportPage() {
       // Resizing between middle and right column
       const leftWidth = columnWidths[0];
       const rightWidth = Math.max(200, Math.min(600, containerWidth - mouseX));
-      const middleWidth = containerWidth - leftWidth - rightWidth;
+      const middleWidth = containerWidth - leftWidth - rightWidth - 2; // Account for both resize handles
       
       if (middleWidth >= 300) { // Minimum middle width
         newWidths[0] = leftWidth;
@@ -584,7 +584,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 1 */}
           <div
-            className="w-1 bg-gray-200 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-0.5 bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 0)}
           />
 
@@ -804,7 +804,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 2 */}
           <div
-            className="w-1 bg-gray-200 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-0.5 bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 1)}
           />
 
