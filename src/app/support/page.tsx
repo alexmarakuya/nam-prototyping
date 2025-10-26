@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 export default function SupportPage() {
   const [selectedConversation, setSelectedConversation] = useState('baggage-policy');
@@ -11,6 +11,88 @@ export default function SupportPage() {
   const [copiedResponse, setCopiedResponse] = useState<Record<string, boolean>>({});
   const [loadedSections, setLoadedSections] = useState<Record<string, string[]>>({});
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  
+  // Resizable columns state
+  const [columnWidths, setColumnWidths] = useState<number[]>([320, 0, 320]); // [left, middle, right] in pixels
+  const [isResizing, setIsResizing] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Resize functionality
+  const handleMouseDown = useCallback((e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    setIsResizing(index);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (isResizing === null || !containerRef.current) return;
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const containerWidth = containerRect.width;
+    const mouseX = e.clientX - containerRect.left;
+    
+    const newWidths = [...columnWidths];
+    
+    if (isResizing === 0) {
+      // Resizing between left and middle column
+      const leftWidth = Math.max(200, Math.min(600, mouseX));
+      const rightWidth = columnWidths[2];
+      const middleWidth = containerWidth - leftWidth - rightWidth;
+      
+      if (middleWidth >= 300) { // Minimum middle width
+        newWidths[0] = leftWidth;
+        newWidths[1] = middleWidth;
+        newWidths[2] = rightWidth;
+      }
+    } else if (isResizing === 1) {
+      // Resizing between middle and right column
+      const leftWidth = columnWidths[0];
+      const rightWidth = Math.max(200, Math.min(600, containerWidth - mouseX));
+      const middleWidth = containerWidth - leftWidth - rightWidth;
+      
+      if (middleWidth >= 300) { // Minimum middle width
+        newWidths[0] = leftWidth;
+        newWidths[1] = middleWidth;
+        newWidths[2] = rightWidth;
+      }
+    }
+    
+    setColumnWidths(newWidths);
+  }, [isResizing, columnWidths]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsResizing(null);
+  }, []);
+
+  useEffect(() => {
+    if (isResizing !== null) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      };
+    }
+  }, [isResizing, handleMouseMove, handleMouseUp]);
+
+  // Calculate middle column width dynamically
+  useEffect(() => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const leftWidth = columnWidths[0];
+      const rightWidth = columnWidths[2];
+      const middleWidth = containerWidth - leftWidth - rightWidth;
+      
+      if (middleWidth !== columnWidths[1]) {
+        setColumnWidths([leftWidth, middleWidth, rightWidth]);
+      }
+    }
+  }, [columnWidths[0], columnWidths[2]]);
+
   const [conversations, setConversations] = useState([
     {
       id: 'baggage-policy',
@@ -524,9 +606,9 @@ Kartik Kapgate`,
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </button>
-                      <div className="flex items-center gap-2 rounded-lg px-3 py-1 border border-gray-300">
+                      <div className="flex items-center gap-2 rounded-lg px-3 py-1 border border-gray-300 min-w-0 flex-shrink-0">
                         <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center text-white text-xs font-medium">{contentData.customerInitial}</div>
-                        <span className="text-sm font-medium text-gray-900">{contentData.customer.split(' ')[0]} {contentData.customer.split(' ')[1]?.[0]}.</span>
+                        <span className="text-sm font-medium text-gray-900 truncate whitespace-nowrap" title={contentData.customer}>{contentData.customer.split(' ')[0]} {contentData.customer.split(' ')[1]?.[0]}.</span>
                         <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
