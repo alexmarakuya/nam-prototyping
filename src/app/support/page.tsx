@@ -475,7 +475,7 @@ Kartik Kapgate`,
         >
           {/* Column 1: Open/Conversations List - Resizable */}
           <div 
-            className={`border-r border-gray-200 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
+            className={`flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
             style={{ 
               backgroundColor: '#FCFBFE',
               width: `${columnWidths[0]}px`,
@@ -818,7 +818,7 @@ Kartik Kapgate`,
 
           {/* Column 3: Acai AI Assistant */}
           <div 
-            className="border-l border-gray-200 flex flex-col" 
+            className="flex flex-col" 
             style={{ 
               backgroundColor: '#FCFBFE',
               width: `${columnWidths[2]}px`,
