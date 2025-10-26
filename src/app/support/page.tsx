@@ -29,14 +29,16 @@ export default function SupportPage() {
     const containerRect = containerRef.current.getBoundingClientRect();
     const containerWidth = containerRect.width;
     const mouseX = e.clientX - containerRect.left;
+    const resizeHandleWidth = 2; // Total width of both resize handles
     
     const newWidths = [...columnWidths];
     
     if (isResizing === 0) {
       // Resizing between left and middle column
-      const leftWidth = Math.max(200, Math.min(600, mouseX));
+      const maxLeftWidth = containerWidth - columnWidths[2] - resizeHandleWidth - 300; // Leave room for middle and right
+      const leftWidth = Math.max(200, Math.min(maxLeftWidth, mouseX));
       const rightWidth = columnWidths[2];
-      const middleWidth = containerWidth - leftWidth - rightWidth - 1; // Account for resize handle
+      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       if (middleWidth >= 300) { // Minimum middle width
         newWidths[0] = leftWidth;
@@ -46,8 +48,9 @@ export default function SupportPage() {
     } else if (isResizing === 1) {
       // Resizing between middle and right column
       const leftWidth = columnWidths[0];
-      const rightWidth = Math.max(200, Math.min(600, containerWidth - mouseX));
-      const middleWidth = containerWidth - leftWidth - rightWidth - 2; // Account for both resize handles
+      const maxRightWidth = containerWidth - leftWidth - resizeHandleWidth - 300; // Leave room for middle
+      const rightWidth = Math.max(200, Math.min(maxRightWidth, containerWidth - mouseX));
+      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       if (middleWidth >= 300) { // Minimum middle width
         newWidths[0] = leftWidth;
@@ -85,9 +88,11 @@ export default function SupportPage() {
       const containerWidth = containerRef.current.offsetWidth;
       const leftWidth = columnWidths[0];
       const rightWidth = columnWidths[2];
-      const middleWidth = containerWidth - leftWidth - rightWidth;
+      const resizeHandleWidth = 2; // Total width of both resize handles
+      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
-      if (middleWidth !== columnWidths[1]) {
+      // Ensure middle column has minimum width
+      if (middleWidth >= 300 && middleWidth !== columnWidths[1]) {
         setColumnWidths([leftWidth, middleWidth, rightWidth]);
       }
     }
@@ -462,7 +467,7 @@ Kartik Kapgate`,
       <div className="flex-1 p-4 pl-0 pr-0">
         <div 
           ref={containerRef}
-          className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden" 
+          className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden max-w-full" 
           style={{ backgroundColor: '#FCFBFE' }}
         >
           {/* Column 1: Open/Conversations List */}
