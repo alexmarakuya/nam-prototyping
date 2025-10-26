@@ -10,6 +10,7 @@ export default function SupportPage() {
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState<Record<string, boolean>>({});
   const [copiedResponse, setCopiedResponse] = useState<Record<string, boolean>>({});
   const [loadedSections, setLoadedSections] = useState<Record<string, string[]>>({});
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [conversations, setConversations] = useState([
     {
       id: 'baggage-policy',
@@ -379,7 +380,7 @@ Kartik Kapgate`,
       <div className="flex-1 p-4 pl-0 pr-0">
         <div className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden" style={{ backgroundColor: '#FCFBFE' }}>
           {/* Column 1: Open/Conversations List */}
-          <div className="w-80 border-r border-gray-200 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
+          <div className={`w-80 border-r border-gray-200 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} style={{ backgroundColor: '#FCFBFE' }}>
             {/* Conversations Header */}
             <div className="h-12 flex items-center px-4" style={{ backgroundColor: '#FCFBFE' }}>
               <div className="flex items-center gap-3">
@@ -401,6 +402,15 @@ Kartik Kapgate`,
                 <button className="p-1 hover:bg-gray-100 rounded">
                   <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                  </svg>
+                </button>
+                {/* Mobile close button */}
+                <button 
+                  className="p-1 hover:bg-gray-100 rounded lg:hidden"
+                  onClick={() => setShowMobileSidebar(false)}
+                >
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
@@ -480,6 +490,18 @@ Kartik Kapgate`,
 
           {/* Column 2: Dynamic Ticket Content */}
           <div className="flex-1 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
+            {/* Mobile menu button */}
+            <div className="lg:hidden p-4 border-b border-gray-200">
+              <button 
+                onClick={() => setShowMobileSidebar(true)}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                Conversations
+              </button>
+            </div>
             {(() => {
               const contentData = renderConversationContent();
               if (!contentData) return null;
@@ -674,7 +696,7 @@ Kartik Kapgate`,
           </div>
 
           {/* Column 3: Acai AI Assistant */}
-          <div className="w-80 border-l border-gray-200 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
+          <div className="w-80 lg:w-80 md:w-64 sm:w-48 border-l border-gray-200 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
             <div className="h-12 flex items-center justify-between px-4 border-b border-gray-200" style={{ backgroundColor: '#FCFBFE' }}>
               <div className="flex items-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1050,7 +1072,7 @@ Kartik Kapgate`,
                       <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mt-3">
                         <h3 className="text-xs font-semibold text-purple-900 mb-2">Need more help to close the case?</h3>
                         <button 
-                          onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
+                          onClick={() => window.open('/acai-redirect', '_blank')}
                           className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
                         >
                           Ask Acai
@@ -1185,7 +1207,7 @@ Kartik Kapgate`,
                     <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mt-3">
                       <h3 className="text-xs font-semibold text-purple-900 mb-2">Need more help to close the case?</h3>
                       <button 
-                        onClick={() => window.open('data:text/html,<html><head><title>Redirecting to Acai</title><style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f9fafb;color:#374151}</style></head><body><div style="text-align:center"><h1 style="font-size:24px;margin-bottom:8px">Redirecting you to Acai...</h1><p style="color:#6b7280">Please wait while we connect you to the Acai assistant.</p></div></body></html>', '_blank')}
+                        onClick={() => window.open('/acai-redirect', '_blank')}
                         className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors duration-200"
                       >
                         Ask Acai
