@@ -35,12 +35,13 @@ export default function SupportPage() {
     
     if (isResizing === 1) {
       // Only resizing between middle and right column
-      const leftWidth = columnWidths[0]; // Fixed left column width
-      const maxRightWidth = containerWidth - leftWidth - resizeHandleWidth - 300; // Leave room for middle
+      const leftWidth = columnWidths[0]; // Fixed left column width (320px)
+      const maxRightWidth = containerWidth - leftWidth - resizeHandleWidth - 300; // Leave room for middle (300px min)
       const rightWidth = Math.max(200, Math.min(maxRightWidth, containerWidth - mouseX));
       const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
-      if (middleWidth >= 300) { // Minimum middle width
+      // Ensure we don't exceed container bounds
+      if (middleWidth >= 300 && (leftWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
         newWidths[0] = leftWidth; // Keep left fixed
         newWidths[1] = middleWidth;
         newWidths[2] = rightWidth;
@@ -74,13 +75,13 @@ export default function SupportPage() {
   useEffect(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-      const leftWidth = columnWidths[0]; // Fixed left column width
+      const leftWidth = 320; // Fixed left column width
       const rightWidth = columnWidths[2];
       const resizeHandleWidth = 1; // Only one resize handle now
       const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
-      // Ensure middle column has minimum width
-      if (middleWidth >= 300 && middleWidth !== columnWidths[1]) {
+      // Ensure middle column has minimum width and total doesn't exceed container
+      if (middleWidth >= 300 && (leftWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
         setColumnWidths([leftWidth, middleWidth, rightWidth]);
       }
     }
@@ -452,10 +453,10 @@ Kartik Kapgate`,
       </div>
 
       {/* Main Content Wrapper - Four Columns */}
-      <div className="flex-1 p-4 pl-0 pr-0">
+      <div className="flex-1 p-4 pl-0 pr-0 min-w-0">
         <div 
           ref={containerRef}
-          className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden max-w-full" 
+          className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden w-full" 
           style={{ backgroundColor: '#FCFBFE' }}
         >
           {/* Column 1: Open/Conversations List - Fixed Width */}
