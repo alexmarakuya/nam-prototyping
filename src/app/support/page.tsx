@@ -460,9 +460,21 @@ Kartik Kapgate`,
 
       {/* Main Content Wrapper - Four Columns */}
       <div className="flex-1 p-4 pl-0 pr-0">
-        <div className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden" style={{ backgroundColor: '#FCFBFE' }}>
+        <div 
+          ref={containerRef}
+          className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden" 
+          style={{ backgroundColor: '#FCFBFE' }}
+        >
           {/* Column 1: Open/Conversations List */}
-          <div className={`w-80 border-r border-gray-200 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} style={{ backgroundColor: '#FCFBFE' }}>
+          <div 
+            className={`border-r border-gray-200 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
+            style={{ 
+              backgroundColor: '#FCFBFE',
+              width: `${columnWidths[0]}px`,
+              minWidth: '200px',
+              maxWidth: '600px'
+            }}
+          >
             {/* Conversations Header */}
             <div className="h-12 flex items-center px-4" style={{ backgroundColor: '#FCFBFE' }}>
               <div className="flex items-center gap-3">
@@ -570,8 +582,21 @@ Kartik Kapgate`,
             </div>
           </div>
 
+          {/* Resize Handle 1 */}
+          <div
+            className="w-1 bg-gray-200 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            onMouseDown={(e) => handleMouseDown(e, 0)}
+          />
+
           {/* Column 2: Dynamic Ticket Content */}
-          <div className="flex-1 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
+          <div 
+            className="flex flex-col" 
+            style={{ 
+              backgroundColor: '#FCFBFE',
+              width: `${columnWidths[1]}px`,
+              minWidth: '300px'
+            }}
+          >
             {/* Mobile menu button */}
             <div className="lg:hidden p-4 border-b border-gray-200">
               <button 
@@ -777,8 +802,22 @@ Kartik Kapgate`,
             </div>
           </div>
 
+          {/* Resize Handle 2 */}
+          <div
+            className="w-1 bg-gray-200 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            onMouseDown={(e) => handleMouseDown(e, 1)}
+          />
+
           {/* Column 3: Acai AI Assistant */}
-          <div className="w-80 lg:w-80 md:w-64 sm:w-48 border-l border-gray-200 flex flex-col" style={{ backgroundColor: '#FCFBFE' }}>
+          <div 
+            className="border-l border-gray-200 flex flex-col" 
+            style={{ 
+              backgroundColor: '#FCFBFE',
+              width: `${columnWidths[2]}px`,
+              minWidth: '200px',
+              maxWidth: '600px'
+            }}
+          >
             <div className="h-12 flex items-center justify-between px-4 border-b border-gray-200" style={{ backgroundColor: '#FCFBFE' }}>
               <div className="flex items-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
