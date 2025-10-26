@@ -13,7 +13,7 @@ export default function SupportPage() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   
   // Resizable columns state
-  const [columnWidths, setColumnWidths] = useState<number[]>([256, 0, 320]); // [inbox: resizable, middle: dynamic, right: resizable] in pixels
+  const [columnWidths, setColumnWidths] = useState<number[]>([320, 0, 320]); // [left: resizable, middle: dynamic, right: resizable] in pixels
   const [isResizing, setIsResizing] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -29,34 +29,34 @@ export default function SupportPage() {
     const containerRect = containerRef.current.getBoundingClientRect();
     const containerWidth = containerRect.width;
     const mouseX = e.clientX - containerRect.left;
-    const resizeHandleWidth = 2; // Two resize handles now (inbox-middle and middle-right)
+    const resizeHandleWidth = 2; // Two resize handles now (left-middle and middle-right)
     
     const newWidths = [...columnWidths];
     
     if (isResizing === 0) {
-      // Resizing between inbox and middle column
-      const minInboxWidth = 200; // 20% shorter than original 256px
-      const maxInboxWidth = containerWidth - columnWidths[2] - resizeHandleWidth - 300; // Leave room for middle and right
-      const inboxWidth = Math.max(minInboxWidth, Math.min(maxInboxWidth, mouseX));
+      // Resizing between left column and middle column
+      const minLeftWidth = 200; // 20% shorter than original 320px
+      const maxLeftWidth = containerWidth - columnWidths[2] - resizeHandleWidth - 300; // Leave room for middle and right
+      const leftWidth = Math.max(minLeftWidth, Math.min(maxLeftWidth, mouseX));
       const rightWidth = columnWidths[2];
-      const middleWidth = containerWidth - inboxWidth - rightWidth - resizeHandleWidth;
+      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       // Ensure we don't exceed container bounds
-      if (middleWidth >= 300 && (inboxWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
-        newWidths[0] = inboxWidth;
+      if (middleWidth >= 300 && (leftWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
+        newWidths[0] = leftWidth;
         newWidths[1] = middleWidth;
         newWidths[2] = rightWidth;
       }
     } else if (isResizing === 1) {
       // Resizing between middle and right column
-      const inboxWidth = columnWidths[0]; // Current inbox width
-      const maxRightWidth = containerWidth - inboxWidth - resizeHandleWidth - 300; // Leave room for middle (300px min)
+      const leftWidth = columnWidths[0]; // Current left column width
+      const maxRightWidth = containerWidth - leftWidth - resizeHandleWidth - 300; // Leave room for middle (300px min)
       const rightWidth = Math.max(200, Math.min(maxRightWidth, containerWidth - mouseX));
-      const middleWidth = containerWidth - inboxWidth - rightWidth - resizeHandleWidth;
+      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       // Ensure we don't exceed container bounds
-      if (middleWidth >= 300 && (inboxWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
-        newWidths[0] = inboxWidth;
+      if (middleWidth >= 300 && (leftWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
+        newWidths[0] = leftWidth;
         newWidths[1] = middleWidth;
         newWidths[2] = rightWidth;
       }
@@ -89,17 +89,17 @@ export default function SupportPage() {
   useEffect(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-      const inboxWidth = columnWidths[0]; // Resizable inbox width
+      const leftWidth = columnWidths[0]; // Resizable left column width
       const rightWidth = columnWidths[2];
       const resizeHandleWidth = 2; // Two resize handles now
-      const middleWidth = containerWidth - inboxWidth - rightWidth - resizeHandleWidth;
+      const middleWidth = containerWidth - leftWidth - rightWidth - resizeHandleWidth;
       
       // Ensure middle column has minimum width and total doesn't exceed container
-      if (middleWidth >= 300 && (inboxWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
-        setColumnWidths([inboxWidth, middleWidth, rightWidth]);
+      if (middleWidth >= 300 && (leftWidth + middleWidth + rightWidth + resizeHandleWidth) <= containerWidth) {
+        setColumnWidths([leftWidth, middleWidth, rightWidth]);
       }
     }
-  }, [columnWidths[0], columnWidths[2]]); // Depend on both inbox and right column changes
+  }, [columnWidths[0], columnWidths[2]]); // Depend on both left and right column changes
 
   const [conversations, setConversations] = useState([
     {
@@ -341,14 +341,7 @@ Kartik Kapgate`,
   return (
     <div className="h-screen flex relative" style={{ backgroundColor: '#ECEAF1' }}>
       {/* Left Sidebar */}
-      <div 
-        className="flex flex-col pt-6 flex-shrink-0" 
-        style={{ 
-          width: `${columnWidths[0]}px`,
-          minWidth: '200px',
-          maxWidth: '400px'
-        }}
-      >
+      <div className="w-64 flex flex-col pt-6 flex-shrink-0">
         {/* Header */}
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
@@ -473,12 +466,6 @@ Kartik Kapgate`,
         </div>
       </div>
 
-      {/* Resize Handle 0 - Between Inbox and Main Content */}
-      <div
-        className="w-px bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
-        onMouseDown={(e) => handleMouseDown(e, 0)}
-      />
-
       {/* Main Content Wrapper - Four Columns */}
       <div className="flex-1 p-4 pl-0 pr-0 min-w-0">
         <div 
@@ -486,14 +473,14 @@ Kartik Kapgate`,
           className="h-full rounded-xl shadow-sm border border-gray-200 flex overflow-hidden w-full" 
           style={{ backgroundColor: '#FCFBFE' }}
         >
-          {/* Column 1: Open/Conversations List - Fixed Width */}
+          {/* Column 1: Open/Conversations List - Resizable */}
           <div 
             className={`border-r border-gray-200 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
             style={{ 
               backgroundColor: '#FCFBFE',
-              width: '320px',
-              minWidth: '320px',
-              maxWidth: '320px'
+              width: `${columnWidths[0]}px`,
+              minWidth: '200px',
+              maxWidth: '500px'
             }}
           >
             {/* Conversations Header */}
@@ -602,6 +589,12 @@ Kartik Kapgate`,
               </div>
             </div>
           </div>
+
+          {/* Resize Handle 0 - Between Left Column and Middle Column */}
+          <div
+            className="w-px bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            onMouseDown={(e) => handleMouseDown(e, 0)}
+          />
 
           {/* Column 2: Dynamic Ticket Content */}
           <div 
