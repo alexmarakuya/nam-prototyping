@@ -204,9 +204,13 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="p-4 sm:p-5 flex flex-col flex-1">
-                    <div className="leading-tight flex-1 min-h-0">
-                      <h2 className="text-sm font-semibold text-gray-900 truncate mb-1" title={prototype.name}>{prototype.name}</h2>
-                      <span className="text-xs sm:text-sm font-normal text-gray-500 line-clamp-2">{prototype.description}</span>
+                    <div className="leading-tight flex-1 min-h-0 min-w-0">
+                      <h2 className="text-sm font-semibold text-gray-900 truncate mb-1 w-full" title={prototype.name}>{prototype.name}</h2>
+                      <span className="text-xs sm:text-sm font-normal text-gray-500 overflow-hidden" style={{
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical'
+                      }}>{prototype.description}</span>
                     </div>
                     <div className="flex justify-between items-center mt-3 sm:mt-4">
                       <div className="text-xs text-gray-400">
