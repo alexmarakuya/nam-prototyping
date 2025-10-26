@@ -1341,7 +1341,7 @@ Kartik Kapgate`,
       </div>
 
       {/* Right Icon Sidebar */}
-      <div className="w-16 flex flex-col items-center py-6 gap-4" style={{ backgroundColor: '#ECEAF1' }}>
+      <div className="w-16 flex flex-col items-center py-6 gap-4 flex-shrink-0" style={{ backgroundColor: '#ECEAF1' }}>
         {/* Green Books/Documentation Icon */}
         <div className="w-10 h-10 flex items-center justify-center">
           <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
