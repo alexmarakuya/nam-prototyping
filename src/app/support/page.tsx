@@ -584,7 +584,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 1 */}
           <div
-            className="w-0.5 bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-px bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 0)}
           />
 
@@ -804,7 +804,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 2 */}
           <div
-            className="w-0.5 bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-px bg-gray-200 hover:bg-gray-400 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 1)}
           />
 
