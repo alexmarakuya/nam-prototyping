@@ -475,7 +475,7 @@ Kartik Kapgate`,
         >
           {/* Column 1: Open/Conversations List - Resizable */}
           <div 
-            className={`border-r border-gray-150 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
+            className={`border-r border-gray-100 flex flex-col ${showMobileSidebar ? 'flex' : 'hidden lg:flex'}`} 
             style={{ 
               backgroundColor: '#FCFBFE',
               width: `${columnWidths[0]}px`,
@@ -592,7 +592,7 @@ Kartik Kapgate`,
 
           {/* Resize Handle 0 - Between Left Column and Middle Column */}
           <div
-            className="w-px bg-gray-150 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-px bg-gray-100 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 0)}
           />
 
@@ -812,13 +812,13 @@ Kartik Kapgate`,
 
           {/* Resize Handle 2 */}
           <div
-            className="w-px bg-gray-150 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
+            className="w-px bg-gray-100 hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors lg:block hidden"
             onMouseDown={(e) => handleMouseDown(e, 1)}
           />
 
           {/* Column 3: Acai AI Assistant */}
           <div 
-            className="border-l border-gray-150 flex flex-col" 
+            className="border-l border-gray-100 flex flex-col" 
             style={{ 
               backgroundColor: '#FCFBFE',
               width: `${columnWidths[2]}px`,
